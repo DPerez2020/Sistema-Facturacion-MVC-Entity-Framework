@@ -7,119 +7,110 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Sistema_Facturacion.Models;
-using Sistema_Facturacion.infraestructure;
-using System.Threading.Tasks;
 
 namespace Sistema_Facturacion.Controllers
 {
-    public class ClientesController : Controller
+    public class CategoriasController : Controller
     {
         private DBContext db = new DBContext();
 
-        // GET: Clientes
-        public  ActionResult Index()
+        // GET: Categorias
+        public ActionResult Index()
         {
-            string query = "SELECT Personas.[Id],[RNC_Cedula],[Nombre],[Telefono],[Email],[Discriminator],[Descripcion] as Categoria " +
-            "FROM[SistemaFacturacion].[dbo].[Personas] inner join Categorias on Categorias.Id=Personas.CategoriaId_Id " +
-            "where Discriminator = 'Cliente'";
-            IEnumerable<Cliente> data = db.Database.SqlQuery<Cliente>(query);
-            var seedata = data.ToList();
-            return View(data.ToList());
+            return View(db.Categorias.ToList());
         }
 
-
-        // GET: Clientes/Details/5
+        // GET: Categorias/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Persona cliente = db.Personas.Find(id);
-            if (cliente == null)
+            Categoria categoria = db.Categorias.Find(id);
+            if (categoria == null)
             {
                 return HttpNotFound();
             }
-            return View(cliente);
+            return View(categoria);
         }
 
-        // GET: Clientes/Create
+        // GET: Categorias/Create
         public ActionResult Create()
-        {   
-            ViewBag.lista = db.Categorias.ToList();
+        {
             return View();
         }
 
-        // POST: Clientes/Create
+        // POST: Categorias/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email")] Cliente cliente)
+        public ActionResult Create([Bind(Include = "Id,Descripcion")] Categoria categoria)
         {
             if (ModelState.IsValid)
             {
-                db.Personas.Add(cliente);
+                db.Categorias.Add(categoria);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(cliente);
+            return View(categoria);
         }
 
-        // GET: Clientes/Edit/5
+        // GET: Categorias/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Persona cliente = db.Personas.Find(id);
-            if (cliente == null)
+            Categoria categoria = db.Categorias.Find(id);
+            if (categoria == null)
             {
                 return HttpNotFound();
             }
-            return View(cliente);
+            return View(categoria);
         }
 
-        // POST: Clientes/Edit/5
+        // POST: Categorias/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email")] Cliente cliente)
+        public ActionResult Edit([Bind(Include = "Id,Descripcion")] Categoria categoria)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cliente).State = EntityState.Modified;
+                db.Entry(categoria).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(cliente);
+            return View(categoria);
         }
 
-        // GET: Clientes/Delete/5
+        // GET: Categorias/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Persona cliente = db.Personas.Find(id);
-            if (cliente == null)
+            Categoria categoria = db.Categorias.Find(id);
+            if (categoria == null)
             {
                 return HttpNotFound();
             }
-            return View(cliente);
+            return View(categoria);
         }
 
-        // POST: Clientes/Delete/5
+        // POST: Categorias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Cliente cliente = (Cliente)db.Personas.Find(id);
-            db.Personas.Remove(cliente);
+            Categoria categoria = db.Categorias.Find(id);
+            db.Categorias.Remove(categoria);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

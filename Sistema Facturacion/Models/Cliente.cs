@@ -8,7 +8,7 @@ namespace Sistema_Facturacion.Models
 {
     public class Cliente:Persona
     {
-        //public string  CategoriaId { get; set; }
-        public Categoria Categoria  { get; set; }
+        public string  Categoria { get; set; }
+        public Categoria CategoriaId  { get; set; }
     }
 }

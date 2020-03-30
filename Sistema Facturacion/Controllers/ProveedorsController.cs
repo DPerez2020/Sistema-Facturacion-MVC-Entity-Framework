@@ -7,119 +7,110 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Sistema_Facturacion.Models;
-using Sistema_Facturacion.infraestructure;
-using System.Threading.Tasks;
 
 namespace Sistema_Facturacion.Controllers
 {
-    public class ClientesController : Controller
+    public class ProveedorsController : Controller
     {
         private DBContext db = new DBContext();
 
-        // GET: Clientes
-        public  ActionResult Index()
+        // GET: Proveedors
+        public ActionResult Index()
         {
-            string query = "SELECT Personas.[Id],[RNC_Cedula],[Nombre],[Telefono],[Email],[Discriminator],[Descripcion] as Categoria " +
-            "FROM[SistemaFacturacion].[dbo].[Personas] inner join Categorias on Categorias.Id=Personas.CategoriaId_Id " +
-            "where Discriminator = 'Cliente'";
-            IEnumerable<Cliente> data = db.Database.SqlQuery<Cliente>(query);
-            var seedata = data.ToList();
-            return View(data.ToList());
+            return View(db.Personas.ToList());
         }
 
-
-        // GET: Clientes/Details/5
+        // GET: Proveedors/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Persona cliente = db.Personas.Find(id);
-            if (cliente == null)
+            Proveedor proveedor = (Proveedor)db.Personas.Find(id);
+            if (proveedor == null)
             {
                 return HttpNotFound();
             }
-            return View(cliente);
+            return View(proveedor);
         }
 
-        // GET: Clientes/Create
+        // GET: Proveedors/Create
         public ActionResult Create()
-        {   
-            ViewBag.lista = db.Categorias.ToList();
+        {
             return View();
         }
 
-        // POST: Clientes/Create
+        // POST: Proveedors/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email")] Cliente cliente)
+        public ActionResult Create([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email")] Proveedor proveedor)
         {
             if (ModelState.IsValid)
             {
-                db.Personas.Add(cliente);
+                db.Personas.Add(proveedor);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(cliente);
+            return View(proveedor);
         }
 
-        // GET: Clientes/Edit/5
+        // GET: Proveedors/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Persona cliente = db.Personas.Find(id);
-            if (cliente == null)
+            Proveedor proveedor = (Proveedor)db.Personas.Find(id);
+            if (proveedor == null)
             {
                 return HttpNotFound();
             }
-            return View(cliente);
+            return View(proveedor);
         }
 
-        // POST: Clientes/Edit/5
+        // POST: Proveedors/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email")] Cliente cliente)
+        public ActionResult Edit([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email")] Proveedor proveedor)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cliente).State = EntityState.Modified;
+                db.Entry(proveedor).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(cliente);
+            return View(proveedor);
         }
 
-        // GET: Clientes/Delete/5
+        // GET: Proveedors/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Persona cliente = db.Personas.Find(id);
-            if (cliente == null)
+            Proveedor proveedor = (Proveedor)db.Personas.Find(id);
+            if (proveedor == null)
             {
                 return HttpNotFound();
             }
-            return View(cliente);
+            return View(proveedor);
         }
 
-        // POST: Clientes/Delete/5
+        // POST: Proveedors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Cliente cliente = (Cliente)db.Personas.Find(id);
-            db.Personas.Remove(cliente);
+            Proveedor proveedor = (Proveedor)db.Personas.Find(id);
+            db.Personas.Remove(proveedor);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

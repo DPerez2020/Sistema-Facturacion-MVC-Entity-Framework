@@ -1,4 +1,4 @@
-﻿@model Sistema_Facturacion.infraestructure.Persona
+﻿@model Sistema_Facturacion.Models.Proveedor
 
 @{
     ViewBag.Title = "Create";
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Persona</h4>
+        <h4>Proveedor</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

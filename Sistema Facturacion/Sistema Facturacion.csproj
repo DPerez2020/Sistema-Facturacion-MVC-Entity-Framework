@@ -127,12 +127,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductoesController.cs" />
+    <Compile Include="Controllers\ProveedorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="infraestructure\Persona.cs" />
+    <Compile Include="infraestructure\Sevice\Servicio.cs" />
     <Compile Include="Migrations\202003300223248_Categorias.cs" />
     <Compile Include="Migrations\202003300223248_Categorias.designer.cs">
       <DependentUpon>202003300223248_Categorias.cs</DependentUpon>
@@ -144,6 +148,10 @@
     <Compile Include="Migrations\202003300305349_Cliente.cs" />
     <Compile Include="Migrations\202003300305349_Cliente.designer.cs">
       <DependentUpon>202003300305349_Cliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003300541370_Cliente1.cs" />
+    <Compile Include="Migrations\202003300541370_Cliente1.designer.cs">
+      <DependentUpon>202003300541370_Cliente1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Categoria.cs" />
@@ -194,14 +202,25 @@
     <Content Include="Views\Clientes\Details.cshtml" />
     <Content Include="Views\Clientes\Edit.cshtml" />
     <Content Include="Views\Clientes\Index.cshtml" />
-    <Content Include="Views\Personas\Create.cshtml" />
-    <Content Include="Views\Personas\Delete.cshtml" />
-    <Content Include="Views\Personas\Details.cshtml" />
-    <Content Include="Views\Personas\Edit.cshtml" />
-    <Content Include="Views\Personas\Index.cshtml" />
+    <Content Include="Views\Proveedors\Create.cshtml" />
+    <Content Include="Views\Proveedors\Delete.cshtml" />
+    <Content Include="Views\Proveedors\Details.cshtml" />
+    <Content Include="Views\Proveedors\Edit.cshtml" />
+    <Content Include="Views\Proveedors\Index.cshtml" />
+    <Content Include="Views\Productoes\Create.cshtml" />
+    <Content Include="Views\Productoes\Delete.cshtml" />
+    <Content Include="Views\Productoes\Details.cshtml" />
+    <Content Include="Views\Productoes\Edit.cshtml" />
+    <Content Include="Views\Productoes\Index.cshtml" />
+    <Content Include="Views\Categorias\Create.cshtml" />
+    <Content Include="Views\Categorias\Delete.cshtml" />
+    <Content Include="Views\Categorias\Details.cshtml" />
+    <Content Include="Views\Categorias\Edit.cshtml" />
+    <Content Include="Views\Categorias\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="infraestructure\Repository\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -225,6 +244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003300305349_Cliente.resx">
       <DependentUpon>202003300305349_Cliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003300541370_Cliente1.resx">
+      <DependentUpon>202003300541370_Cliente1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

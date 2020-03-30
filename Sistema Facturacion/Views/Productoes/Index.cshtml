@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Sistema_Facturacion.infraestructure.Persona>
+﻿@model IEnumerable<Sistema_Facturacion.Models.Producto>
 
 @{
     ViewBag.Title = "Index";
@@ -12,16 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.RNC_Cedula)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Telefono)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.Precio)
         </th>
         <th></th>
     </tr>
@@ -29,16 +23,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.RNC_Cedula)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Telefono)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
+            @Html.DisplayFor(modelItem => item.Precio)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
