@@ -31,12 +31,28 @@ namespace Sistema_Facturacion.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cliente cliente = (Cliente)db.Personas.Find(id);
+           Cliente cliente = db.Clientes.Find(id);
             if (cliente == null)
             {
                 return HttpNotFound();
             }
-            return View(cliente);
+            var categoria = db.Categorias.Find(cliente.CategoriaId);
+
+            var data = new Categoria()
+            {
+                Descripcion = categoria.Descripcion,
+                Clientes = new List<Cliente>() {
+                    new Cliente(){
+                        Id=cliente.Id,
+                        Nombre=cliente.Nombre,
+                        RNC_Cedula=cliente.RNC_Cedula,
+                        Telefono=cliente.Telefono,
+                        Email=cliente.Email,
+                        CategoriaId=cliente.CategoriaId
+                    }
+                }
+            };
+            return View(data);
         }
 
         // GET: Clientes/Create
@@ -70,7 +86,7 @@ namespace Sistema_Facturacion.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cliente cliente = (Cliente)db.Personas.Find(id);
+            Cliente cliente = db.Clientes.Find(id);
             if (cliente == null)
             {
                 return HttpNotFound();

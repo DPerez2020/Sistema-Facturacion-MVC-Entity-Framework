@@ -8,5 +8,6 @@ namespace Sistema_Facturacion.Models
 {
     public class Proveedor:Persona
     {
+        public List<Producto> Productos { get; set; }
     }
 }

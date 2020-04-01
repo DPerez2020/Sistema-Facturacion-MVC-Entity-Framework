@@ -17,7 +17,8 @@ namespace Sistema_Facturacion.Controllers
         // GET: Productoes
         public ActionResult Index()
         {
-            return View(db.Productos.ToList());
+            var data=db.Proveedores.Include(x => x.Productos).ToList();
+            return View("Index",data);
         }
 
         // GET: Productoes/Details/5
@@ -32,12 +33,27 @@ namespace Sistema_Facturacion.Controllers
             {
                 return HttpNotFound();
             }
-            return View(producto);
+            var proveedor = db.Proveedores.Find(producto.ProveedorId);
+            var data = new Proveedor()
+            {
+                Nombre = proveedor.Nombre,
+                Productos = new List<Producto>() {
+                    new Producto() {
+                        Id = producto.Id,
+                        Nombre = producto.Nombre,
+                        Precio = producto.Precio,
+                        ProveedorId = producto.ProveedorId
+                    }
+                }
+            };
+
+            return View(data);
         }
 
         // GET: Productoes/Create
         public ActionResult Create()
         {
+            ViewBag.lista = db.Proveedores.ToList();
             return View();
         }
 
@@ -46,7 +62,7 @@ namespace Sistema_Facturacion.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nombre,Precio")] Producto producto)
+        public ActionResult Create([Bind(Include = "Id,Nombre,Precio,ProveedorId")] Producto producto)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +86,7 @@ namespace Sistema_Facturacion.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.lista = db.Proveedores.ToList();
             return View(producto);
         }
 
@@ -78,7 +95,7 @@ namespace Sistema_Facturacion.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nombre,Precio")] Producto producto)
+        public ActionResult Edit([Bind(Include = "Id,Nombre,Precio,ProveedorId")] Producto producto)
         {
             if (ModelState.IsValid)
             {

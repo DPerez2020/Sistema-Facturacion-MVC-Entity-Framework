@@ -1,4 +1,4 @@
-﻿@model Sistema_Facturacion.Models.Producto
+﻿@model Sistema_Facturacion.Models.Proveedor
 
 @{
     ViewBag.Title = "Details";
@@ -11,19 +11,27 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.Productos.First().Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Productos.First().Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Productos.First().Precio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Productos.First().Precio)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Nombre)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Nombre)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Precio)
         </dd>
 
     </dl>
