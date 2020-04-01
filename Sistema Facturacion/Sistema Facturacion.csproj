@@ -153,6 +153,14 @@
     <Compile Include="Migrations\202003300541370_Cliente1.designer.cs">
       <DependentUpon>202003300541370_Cliente1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004010038194_Categoria.cs" />
+    <Compile Include="Migrations\202004010038194_Categoria.designer.cs">
+      <DependentUpon>202004010038194_Categoria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202004010142532_Cliente2.cs" />
+    <Compile Include="Migrations\202004010142532_Cliente2.designer.cs">
+      <DependentUpon>202004010142532_Cliente2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cliente.cs" />
@@ -247,6 +255,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003300541370_Cliente1.resx">
       <DependentUpon>202003300541370_Cliente1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004010038194_Categoria.resx">
+      <DependentUpon>202004010038194_Categoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004010142532_Cliente2.resx">
+      <DependentUpon>202004010142532_Cliente2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

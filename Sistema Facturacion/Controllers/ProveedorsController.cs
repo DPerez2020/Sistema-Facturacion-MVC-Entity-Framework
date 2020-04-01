@@ -17,7 +17,10 @@ namespace Sistema_Facturacion.Controllers
         // GET: Proveedors
         public ActionResult Index()
         {
-            return View(db.Personas.ToList());
+        string query = "SELECT [Id],[RNC_Cedula],[Nombre],[Telefono],[Email],[Discriminator] FROM[SistemaFacturacion].[dbo].[Personas] where Discriminator = 'Proveedor'";
+        IEnumerable<Proveedor> data = db.Database.SqlQuery<Proveedor>(query);
+
+            return View(data.ToList());
         }
 
         // GET: Proveedors/Details/5
@@ -96,7 +99,7 @@ namespace Sistema_Facturacion.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Proveedor proveedor = (Proveedor)db.Personas.Find(id);
+            Proveedor proveedor =(Proveedor)db.Personas.Find(id);
             if (proveedor == null)
             {
                 return HttpNotFound();

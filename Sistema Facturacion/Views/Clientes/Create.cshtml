@@ -46,11 +46,12 @@
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
     </div>
+
     <div class="form-group">
-        @Html.LabelFor(model => model.Categoria, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.CategoriaId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-           @Html.DropDownList("Categorias",new SelectList( ViewBag.lista,"Id","Descripcion"))
-            @Html.ValidationMessageFor(model => model.Categoria, "", new { @class = "text-danger" })
+           @Html.DropDownListFor(model=>model.CategoriaId,new SelectList( ViewBag.lista,"Id","Descripcion"))
+            @Html.ValidationMessageFor(model => model.CategoriaId, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">

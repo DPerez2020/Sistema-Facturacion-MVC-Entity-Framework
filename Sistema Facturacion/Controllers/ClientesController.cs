@@ -19,12 +19,8 @@ namespace Sistema_Facturacion.Controllers
         // GET: Clientes
         public  ActionResult Index()
         {
-            string query = "SELECT Personas.[Id],[RNC_Cedula],[Nombre],[Telefono],[Email],[Discriminator],[Descripcion] as Categoria " +
-            "FROM[SistemaFacturacion].[dbo].[Personas] inner join Categorias on Categorias.Id=Personas.CategoriaId_Id " +
-            "where Discriminator = 'Cliente'";
-            IEnumerable<Cliente> data = db.Database.SqlQuery<Cliente>(query);
-            var seedata = data.ToList();
-            return View(data.ToList());
+            var datos=db.Categorias.Include(x => x.Clientes).ToList();
+            return View("Index",datos);
         }
 
 
@@ -35,7 +31,7 @@ namespace Sistema_Facturacion.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Persona cliente = db.Personas.Find(id);
+            Cliente cliente = (Cliente)db.Personas.Find(id);
             if (cliente == null)
             {
                 return HttpNotFound();
@@ -55,7 +51,7 @@ namespace Sistema_Facturacion.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email")] Cliente cliente)
+        public ActionResult Create([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email,CategoriaId")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +60,7 @@ namespace Sistema_Facturacion.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(cliente);
+            return View();
         }
 
         // GET: Clientes/Edit/5
@@ -74,11 +70,12 @@ namespace Sistema_Facturacion.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Persona cliente = db.Personas.Find(id);
+            Cliente cliente = (Cliente)db.Personas.Find(id);
             if (cliente == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.lista = db.Categorias.ToList();
             return View(cliente);
         }
 
@@ -87,7 +84,7 @@ namespace Sistema_Facturacion.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email")] Cliente cliente)
+        public ActionResult Edit([Bind(Include = "Id,RNC_Cedula,Nombre,Telefono,Email,CategoriaId")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +102,7 @@ namespace Sistema_Facturacion.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Persona cliente = db.Personas.Find(id);
+            Cliente cliente = (Cliente)db.Personas.Find(id);
             if (cliente == null)
             {
                 return HttpNotFound();
