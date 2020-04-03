@@ -14,6 +14,8 @@ namespace Sistema_Facturacion.Models
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Existencia> Existencias { get; set; }
+        public DbSet<Entradas> Entradas { get; set; }
 
         public System.Data.Entity.DbSet<Sistema_Facturacion.infraestructure.Persona> Personas { get; set; }
     }

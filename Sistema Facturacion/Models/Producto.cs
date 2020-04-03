@@ -11,5 +11,6 @@ namespace Sistema_Facturacion.Models
         public string Nombre { get; set; }
         public decimal Precio { get; set; }
         public int ProveedorId { get; set; }
+        public Existencia Existencia { get; set; }
     }
 }

@@ -130,6 +130,7 @@
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProcesosController.cs" />
     <Compile Include="Controllers\ProductoesController.cs" />
     <Compile Include="Controllers\ProveedorsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -165,10 +166,16 @@
     <Compile Include="Migrations\202004011838525_Proveedor.designer.cs">
       <DependentUpon>202004011838525_Proveedor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004012325395_Existencia.cs" />
+    <Compile Include="Migrations\202004012325395_Existencia.designer.cs">
+      <DependentUpon>202004012325395_Existencia.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\DBContext.cs" />
+    <Compile Include="Models\Entradas.cs" />
+    <Compile Include="Models\Existencia.cs" />
     <Compile Include="Models\Producto.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -229,6 +236,7 @@
     <Content Include="Views\Productoes\Details.cshtml" />
     <Content Include="Views\Productoes\Edit.cshtml" />
     <Content Include="Views\Productoes\Index.cshtml" />
+    <Content Include="Views\Procesos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -268,6 +276,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004011838525_Proveedor.resx">
       <DependentUpon>202004011838525_Proveedor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004012325395_Existencia.resx">
+      <DependentUpon>202004012325395_Existencia.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
