@@ -10,6 +10,13 @@ namespace Sistema_Facturacion.Models
     {
         public DBContext():base("SistemaFacturacionConnectionString") { 
         }
+
+       protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Entradas>().HasRequired(s => s.Proveedor).WithMany().WillCascadeOnDelete(false);
+            //modelBuilder.Entity<Proveedor>().HasRequired(s => s.Productos).WithMany().WillCascadeOnDelete(false);
+            //modelBuilder.Entity<Entradas>().HasRequired(s =>s.Producto ).WithMany().WillCascadeOnDelete(false);
+        }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }

@@ -236,7 +236,7 @@
     <Content Include="Views\Productoes\Details.cshtml" />
     <Content Include="Views\Productoes\Edit.cshtml" />
     <Content Include="Views\Productoes\Index.cshtml" />
-    <Content Include="Views\Procesos\Index.cshtml" />
+    <Content Include="Views\Procesos\Entradas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

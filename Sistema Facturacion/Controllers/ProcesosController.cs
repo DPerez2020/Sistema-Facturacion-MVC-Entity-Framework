@@ -11,82 +11,39 @@ namespace Sistema_Facturacion.Controllers
     {
         private DBContext db = new DBContext();
         // GET: Procesos
-        public ActionResult Index()
+        public ActionResult Entradas()
         {
             ViewBag.ListaProveedores = db.Proveedores.ToList();
             ViewBag.ListaProductos = db.Productos.ToList();
             return View();
         }
 
-        // GET: Procesos/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Procesos/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
         // POST: Procesos/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Agregar(Entradas entradas)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            using (var transaccion=db.Database.BeginTransaction()) { 
+                try
+                {
+                    entradas.Fecha = DateTime.Now;
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                    db.Entradas.Add(entradas);
+                    db.SaveChanges();
+                    var existencia = db.Existencias.FirstOrDefault(x => x.ProductoId == entradas.ProductoId);
 
-        // GET: Procesos/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Procesos/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Procesos/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Procesos/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
+                    existencia.ProductoId = entradas.ProductoId;
+                    existencia.Cantidad += entradas.Cantidad;
+                    db.Entry(existencia).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    transaccion.Commit();
+                    
+                    return RedirectToAction("Entradas");
+                }
+                catch( Exception ex)
+                {
+                    transaccion.Rollback();
+                    return View();
+                }
             }
         }
     }

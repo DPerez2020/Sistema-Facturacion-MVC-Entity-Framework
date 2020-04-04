@@ -68,6 +68,13 @@ namespace Sistema_Facturacion.Controllers
             {
                 db.Productos.Add(producto);
                 db.SaveChanges();
+                var idProducto = db.Productos.Max(x => x.Id);
+
+                Existencia existencia = new Existencia();
+                existencia.ProductoId = idProducto;
+                existencia.Cantidad = 0;
+                db.Existencias.Add(existencia);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
