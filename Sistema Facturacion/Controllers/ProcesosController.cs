@@ -18,7 +18,12 @@ namespace Sistema_Facturacion.Controllers
             ViewBag.ListaProductos = db.Productos.ToList();
             return View();
         }
+        [HttpPost]
+        public ActionResult cargarProductos(int proveedorid) {
+            var productos = db.Productos.Where(x => x.ProveedorId == proveedorid).ToList();
 
+            return Json(productos);
+        }
         [HttpPost]
         public ActionResult Agregar(Entradas entradas)
         {
