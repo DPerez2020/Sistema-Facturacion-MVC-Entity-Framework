@@ -138,7 +138,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="infraestructure\Persona.cs" />
+    <Compile Include="Migrations\202004041917056_Facturacion.cs" />
+    <Compile Include="Migrations\202004041917056_Facturacion.designer.cs">
+      <DependentUpon>202004041917056_Facturacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DetalleFactura.cs" />
+    <Compile Include="Models\Persona.cs" />
     <Compile Include="infraestructure\Sevice\Servicio.cs" />
     <Compile Include="Migrations\202003300223248_Categorias.cs" />
     <Compile Include="Migrations\202003300223248_Categorias.designer.cs">
@@ -178,6 +183,7 @@
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Models\Entradas.cs" />
     <Compile Include="Models\Existencia.cs" />
+    <Compile Include="Models\Facturacion.cs" />
     <Compile Include="Models\Producto.cs" />
     <Compile Include="Models\Proveedor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -334,6 +340,7 @@
     <Content Include="Views\Productoes\Edit.cshtml" />
     <Content Include="Views\Productoes\Index.cshtml" />
     <Content Include="Views\Procesos\Entradas.cshtml" />
+    <Content Include="Views\Procesos\Facturacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -368,6 +375,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004012325395_Existencia.resx">
       <DependentUpon>202004012325395_Existencia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004041917056_Facturacion.resx">
+      <DependentUpon>202004041917056_Facturacion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

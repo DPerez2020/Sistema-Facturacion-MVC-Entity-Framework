@@ -5,13 +5,13 @@ using System.Web;
 
 namespace Sistema_Facturacion.Models
 {
-    public class Producto
+    public class Facturacion
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
-        public decimal Precio { get; set; }
-        public int ProveedorId { get; set; }
+        public int Id_Cliente { get; set; }
+        public decimal TotalProducto { get; set; }
+        public decimal TotalPagado { get; set; }
+        public DateTime Fecha { get; set; }
         public List<DetalleFactura> DetalleFacturas { get; set; }
-        //public Existencia Existencia { get; set; }
     }
 }

@@ -23,7 +23,8 @@ namespace Sistema_Facturacion.Models
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Existencia> Existencias { get; set; }
         public DbSet<Entradas> Entradas { get; set; }
-
+        public DbSet<Facturacion> Facturacions { get; set; }
+        public DbSet<DetalleFactura> DetalleFacturas { get; set; }
         public System.Data.Entity.DbSet<Sistema_Facturacion.infraestructure.Persona> Personas { get; set; }
     }
 }

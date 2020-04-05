@@ -1,0 +1,91 @@
+﻿@model Sistema_Facturacion.Models.Facturacion
+
+@{
+    ViewBag.Title = "Facturacion";
+}
+
+<h2>Facturacion</h2>
+@using (Html.BeginForm("Facturar", "Procesos"))
+{
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.Label("Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(s => s.Id_Cliente, new SelectList(ViewBag.ListaClientes, "Id", "Nombre"))
+            @Html.ValidationMessageFor(model => model.Id_Cliente, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-10">
+        @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label col-md-2" })
+        <P>@DateTime.Now.ToString()</P>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Agregar" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-10">
+        @Html.Label("Producto", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.DropDownListFor(s => s.DetalleFacturas.First().Producto.Nombre, new SelectList(ViewBag.ListaProducto, "Precio", "Nombre"),new {id="producto" })
+        @Html.ValidationMessageFor(model => model.DetalleFacturas.First().Producto.Nombre, "", new { @class = "text-danger" })
+    </div>
+    Cantidad
+    <input type="number" min="0" id="cantidad" />
+    <input type="button" onclick="agregarProducto()" value="Agregar"/>
+</div>
+
+<div id="divConcepto">
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody id="tablaConceptos">
+        </tbody>
+    </table>
+    <div id="concepto"></div>
+</div>
+}
+<script>
+    var num = 0;
+    function agregarProducto() {
+        var tablaConceptos = document.getElementById("tablaConceptos");
+        var producto = document.getElementById("producto");
+        var cantidad = document.getElementById("cantidad")
+        var concepto = document.getElementById("concepto");
+        var tr = document.createElement("tr");
+        tr.innerHTML =
+            `<td>${producto.textContent}</td>
+            <td>${producto.value}</td>
+            <td>${cantidad.value}</td>`;
+        tablaConceptos.appendChild(tr);
+
+        let hiddenIndex = document.createElement("input");
+        let hiddenCantidad = document.createElement("input");
+        let hiddenPrecio = document.createElement("input");
+        let hiddenNombre = document.createElement("input");
+        hiddenIndex.name = "DetalleFacturas.Index";
+        hiddenIndex.value = num;
+        hiddenIndex.type = "hidden";
+        hiddenNombre.name = "DetalleFacturas[" + num + "].Producto.Nombre";
+        hiddenNombre.value = producto.textContent;
+        hiddenNombre.type = "hidden";
+        hiddenCantidad.name = "DetalleFacturas[" + num + "].CantidadProducto";
+        hiddenCantidad.value = cantidad.value;
+        hiddenCantidad.type = "hidden";
+        hiddenPrecio.name = "DetalleFacturas[" + num + "].Producto.Precio";
+        hiddenPrecio.value = producto.value;
+        hiddenPrecio.type = "hidden";
+        concepto.appendChild(hiddenIndex);
+        concepto.appendChild(hiddenNombre);
+        concepto.appendChild(hiddenPrecio);
+        concepto.appendChild(hiddenCantidad);
+        num++;
+    }
+</script>
