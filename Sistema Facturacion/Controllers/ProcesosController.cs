@@ -54,11 +54,24 @@ namespace Sistema_Facturacion.Controllers
             return View();
         }
 
+        public ActionResult obtenerClientes(int idcliente) {
+            var cliente = db.Clientes.Find(idcliente);
+            var categoria = db.Categorias.Find(cliente.CategoriaId).Descripcion;
+            return Json(new {cliente,categoria});
+        }
+
         [HttpPost]
         public ActionResult Facturar(Facturacion facturacion) {
             try
             {
                 var detallefactura = facturacion.DetalleFacturas;
+                var cliente = db.Clientes.Find(facturacion.Id_Cliente);
+                var categoria = db.Categorias.Find(cliente.CategoriaId);
+                var totalApagar = facturacion.TotalProducto + (facturacion.TotalProducto * (decimal)0.18);
+                if (categoria.Descripcion == "Premiun")
+                {
+                    facturacion.TotalProducto -= facturacion.TotalProducto * (decimal)0.05;
+                }
                 facturacion.DetalleFacturas = null;
                 facturacion.Fecha = DateTime.Now;
                 db.Facturacions.Add(facturacion);
@@ -76,7 +89,7 @@ namespace Sistema_Facturacion.Controllers
                     db.DetalleFacturas.Add(detalleFactura);
                 }
                 db.SaveChanges();
-                return View("Facturacion");
+                return RedirectToAction("Facturacion");
             }
             catch (Exception ex)
             {

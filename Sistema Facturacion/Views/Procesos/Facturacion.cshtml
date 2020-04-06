@@ -5,14 +5,42 @@
 }
 
 <h2>Facturacion</h2>
-@using (Html.BeginForm("Facturar", "Procesos"))
+@using (Html.BeginForm("Facturar", "Procesos", FormMethod.Post))
 {
 <div class="form-horizontal">
     <div class="form-group">
         <div class="col-md-10">
             @Html.Label("Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.DropDownListFor(s => s.Id_Cliente, new SelectList(ViewBag.ListaClientes, "Id", "Nombre"))
+            @Html.DropDownListFor(s => s.Id_Cliente, new SelectList(ViewBag.ListaClientes, "Id", "Nombre"), new { id = "idcliente" })
             @Html.ValidationMessageFor(model => model.Id_Cliente, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.Label("Tipo cliente:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <label id="tipoCliente"></label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.Label("Descuento:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <label id="descuento"></label>
+        </div>
+    </div>
+    <div class="col-md-10">
+        @Html.Label("Total a pagar:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <label id="totalApagar">0</label>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10 ">
+            @Html.LabelFor(x => x.TotalProducto, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.TextBoxFor(s => s.TotalProducto, htmlAttributes: new { @class = "col-md-2", id = "totalProducto", type = "number" })
+            @Html.ValidationMessageFor(model => model.TotalProducto, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-10">
+            @Html.LabelFor(x => x.TotalPagado, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(s => s.TotalPagado, new { @class = "custom-control-input col-md-2" })
+            @Html.ValidationMessageFor(model => model.TotalPagado, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-10">
@@ -21,51 +49,62 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Agregar" class="btn btn-default" />
+            <input type="submit" value="Facturar" class="btn btn-default" />
         </div>
     </div>
 </div>
 
-<div class="form-group">
-    <div class="col-md-10">
-        @Html.Label("Producto", htmlAttributes: new { @class = "control-label col-md-2" })
-        @Html.DropDownListFor(s => s.DetalleFacturas.First().Producto.Nombre, new SelectList(ViewBag.ListaProducto, "Precio", "Nombre"),new {id="producto" })
-        @Html.ValidationMessageFor(model => model.DetalleFacturas.First().Producto.Nombre, "", new { @class = "text-danger" })
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.Label("Producto", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(s => s.DetalleFacturas.First().Producto.Nombre, new SelectList(ViewBag.ListaProducto, "Precio", "Nombre"), new { id = "producto" })
+            @Html.ValidationMessageFor(model => model.DetalleFacturas.First().Producto.Nombre, "", new { @class = "text-danger" })
+        </div>
+        Cantidad
+        <input type="number" min="0" id="cantidad" />
+        <input type="button" onclick="agregarProducto()" value="Agregar" />
     </div>
-    Cantidad
-    <input type="number" min="0" id="cantidad" />
-    <input type="button" onclick="agregarProducto()" value="Agregar"/>
-</div>
 
-<div id="divConcepto">
-    <table>
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-        <tbody id="tablaConceptos">
-        </tbody>
-    </table>
-    <div id="concepto"></div>
-</div>
+    <div id="divConcepto">
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody id="tablaConceptos">
+            </tbody>
+        </table>
+        <div id="concepto"></div>
+    </div>
 }
 <script>
     var num = 0;
+    var totalProducto = document.getElementById("totalProducto");
+    totalProducto.value = 0;
     function agregarProducto() {
         var tablaConceptos = document.getElementById("tablaConceptos");
         var producto = document.getElementById("producto");
         var cantidad = document.getElementById("cantidad")
         var concepto = document.getElementById("concepto");
+        var totalProducto = document.getElementById("totalProducto");
+        var totalaPagar = document.getElementById("totalApagar");
         var tr = document.createElement("tr");
+        var descuento = document.getElementById("descuento").textContent;
         tr.innerHTML =
-            `<td>${producto.textContent}</td>
+            `<td>${producto.options[producto.selectedIndex].innerText}</td>
             <td>${producto.value}</td>
             <td>${cantidad.value}</td>`;
         tablaConceptos.appendChild(tr);
-
+        totalProducto.value = parseFloat(totalProducto.value)+(parseFloat(producto.value) * parseFloat(cantidad.value))
+        if (descuento == "5%") {
+            totalaPagar.textContent = parseFloat(totalProducto.value)+parseFloat(totalProducto.value) * 0.18 - parseFloat(totalProducto.value) * 0.05
+        }
+        else {
+            totalaPagar.textContent = parseFloat(totalProducto.value) + parseFloat(totalProducto.value) * 0.18
+        }
         let hiddenIndex = document.createElement("input");
         let hiddenCantidad = document.createElement("input");
         let hiddenPrecio = document.createElement("input");
@@ -74,7 +113,7 @@
         hiddenIndex.value = num;
         hiddenIndex.type = "hidden";
         hiddenNombre.name = "DetalleFacturas[" + num + "].Producto.Nombre";
-        hiddenIndex.value = producto.textContent;
+        hiddenNombre.value = producto.options[producto.selectedIndex].innerText;
         hiddenNombre.type = "hidden";
         hiddenCantidad.name = "DetalleFacturas[" + num + "].CantidadProducto";
         hiddenCantidad.value = cantidad.value;
@@ -88,4 +127,35 @@
         concepto.appendChild(hiddenCantidad);
         num++;
     }
+</script>
+<!--JQUERRY-->
+<script>
+    $(document).ready(function () {
+        //Carga dinamicamente los elementos dentro del dropdown list dependiendo del seleccionado
+        $("#idcliente").change(function () {
+            //Obtenemos el valor seleccionado en el drodownlist
+            let value = $(this).val().toString();
+                $.ajax({
+                    //Metodo de peticion
+                    type: 'POST',
+                    //Se especifica el action y el controlador
+                    url: "@Url.Action("obtenerClientes", "Procesos")",
+                    data: {idcliente: value },
+                    //En caso de que todo salga bien ejecuta esto y recibe como parametro el resultado que se envia desde el action
+                    success: function (response) {
+                        console.log(response.categoria)
+                        $("#tipoCliente").text(response.categoria)
+                        if (response.categoria == "Premium") {
+                            $("#descuento").text("5%")
+                        }
+                        else {
+                            $("#descuento").text("Ninguno")
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response);
+                    }
+                });
+        });
+    });
 </script>
