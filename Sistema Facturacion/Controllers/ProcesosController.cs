@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Rotativa;
 using Sistema_Facturacion.Models;
 
 namespace Sistema_Facturacion.Controllers
@@ -62,41 +63,71 @@ namespace Sistema_Facturacion.Controllers
 
         [HttpPost]
         public ActionResult Facturar(Facturacion facturacion) {
-            try
-            {
-                var detallefactura = facturacion.DetalleFacturas;
-                var cliente = db.Clientes.Find(facturacion.Id_Cliente);
-                var categoria = db.Categorias.Find(cliente.CategoriaId);
-                var totalApagar = facturacion.TotalProducto + (facturacion.TotalProducto * (decimal)0.18);
-                if (categoria.Descripcion == "Premiun")
+            using (var transaccion=db.Database.BeginTransaction()) { 
+                try
                 {
-                    facturacion.TotalProducto -= facturacion.TotalProducto * (decimal)0.05;
+                    var detallefactura = facturacion.DetalleFacturas;
+                    var cliente = db.Clientes.Find(facturacion.Id_Cliente);
+                    var categoria = db.Categorias.Find(cliente.CategoriaId);
+                    var totalApagar = facturacion.TotalProducto + (facturacion.TotalProducto * (decimal)0.18);
+                    if (categoria.Descripcion == "Premiun")
+                    {
+                        facturacion.TotalProducto -= facturacion.TotalProducto * (decimal)0.05;
+                    }
+                    facturacion.DetalleFacturas = null;
+                    facturacion.Fecha = DateTime.Now;
+                    db.Facturacions.Add(facturacion);
+                    db.SaveChanges();
+                    var productos = db.Productos.ToList();
+                    var idfactura = db.Facturacions.Max(x => x.Id);
+                    foreach (var item in detallefactura)
+                    {
+                        var idProducto = productos.FirstOrDefault(x => x.Nombre == item.Producto.Nombre && x.Precio == item.Producto.Precio);
+                        DetalleFactura detalleFactura = new DetalleFactura();
+                        detalleFactura.FacturacionId = idfactura;
+                        detalleFactura.ProductoId = idProducto.Id;
+                        detalleFactura.CantidadProducto = item.CantidadProducto;
+                        detalleFactura.Total = item.CantidadProducto * item.Producto.Precio;
+                        db.DetalleFacturas.Add(detalleFactura);
+                    }
+                    db.SaveChanges();
+                    transaccion.Commit();
+                    return RedirectToAction("Facturacion");
                 }
-                facturacion.DetalleFacturas = null;
-                facturacion.Fecha = DateTime.Now;
-                db.Facturacions.Add(facturacion);
-                db.SaveChanges();
-                var productos = db.Productos.ToList();
-                var idfactura = db.Facturacions.Max(x => x.Id);
-                foreach (var item in detallefactura)
+                catch (Exception ex)
                 {
-                    var idProducto = productos.FirstOrDefault(x=>x.Nombre==item.Producto.Nombre && x.Precio==item.Producto.Precio);
-                    DetalleFactura detalleFactura = new DetalleFactura();
-                    detalleFactura.FacturacionId = idfactura;
-                    detalleFactura.ProductoId = idProducto.Id;
-                    detalleFactura.CantidadProducto = item.CantidadProducto;
-                    detalleFactura.Total = item.CantidadProducto * item.Producto.Precio;
-                    db.DetalleFacturas.Add(detalleFactura);
+                    transaccion.Rollback();
+                    return RedirectToAction("print");
                 }
-                db.SaveChanges();
-                return RedirectToAction("Facturacion");
-            }
-            catch (Exception ex)
-            {
-                throw;
             }
         }
 
-        // POST: Procesos/Create
+        public ActionResult Recibo()
+        {
+            var IdFactura = db.Facturacions.Max(x => x.Id);
+            var detalleFactura = from a in db.DetalleFacturas join b in db.Productos
+                            on a.ProductoId equals b.Id
+                            where a.FacturacionId==IdFactura
+                            select new VistaFactura() { 
+                                NombreProducto=b.Nombre,
+                                PrecioProduco=b.Precio,
+                                CantidadProducto=a.CantidadProducto,
+                                Total=a.Total
+                            } ;
+
+            var Factura = db.Facturacions.Find(IdFactura);
+            var cliente= db.Clientes.Find(Factura.Id_Cliente);
+            var detalle= db.DetalleFacturas.Where(x => x.FacturacionId == Factura.Id);
+            ViewBag.Detalle = detalleFactura;
+            ViewBag.cliente = cliente;
+            ViewBag.categoria = db.Categorias.Find(cliente.CategoriaId).Descripcion;
+            return View(Factura);
+        }
+
+        public ActionResult print() {
+            return new ActionAsPdf("Recibo") { 
+                FileName="factura.pdf",
+            };
+        }
     }
 }
