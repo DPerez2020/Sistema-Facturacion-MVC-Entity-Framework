@@ -78,6 +78,7 @@ namespace Sistema_Facturacion.Controllers
                 db.SaveChanges();
                 var productos = db.Productos.ToList();
                 var idfactura = db.Facturacions.Max(x => x.Id);
+                var existenciaProducto = db.Existencias.ToList();
                 foreach (var item in detallefactura)
                 {
                     var idProducto = productos.FirstOrDefault(x=>x.Nombre==item.Producto.Nombre && x.Precio==item.Producto.Precio);
@@ -87,6 +88,11 @@ namespace Sistema_Facturacion.Controllers
                     detalleFactura.CantidadProducto = item.CantidadProducto;
                     detalleFactura.Total = item.CantidadProducto * item.Producto.Precio;
                     db.DetalleFacturas.Add(detalleFactura);
+
+                    //Actualizacion del stock
+                    var exisProduct = existenciaProducto.Find(x => x.ProductoId == detalleFactura.ProductoId);
+                    exisProduct.Cantidad -= detalleFactura.CantidadProducto;
+                    db.Entry(exisProduct).State = System.Data.Entity.EntityState.Modified;
                 }
                 db.SaveChanges();
                 return RedirectToAction("Facturacion");
@@ -96,7 +102,5 @@ namespace Sistema_Facturacion.Controllers
                 throw;
             }
         }
-
-        // POST: Procesos/Create
     }
 }
