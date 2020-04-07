@@ -1,0 +1,41 @@
+﻿@model List<Sistema_Facturacion.Models.VistaEntrada>
+@{
+    ViewBag.Title = "HistorialEntradas";
+}
+
+<h2>Historial Entradas</h2>
+<form action="../Procesos/HistorialEntradas" method="post">
+    @Html.DropDownList("proveedorId", new SelectList(ViewBag.ListaProveedores, "Id", "Nombre"), "Seleccionar")
+    @Html.DropDownList("productoId", new SelectList(ViewBag.ListaProductos, "Id", "Nombre"), "Seleccionar")
+    <input type="date" name="fecha" />
+    <p>Que deseas ver?</p>
+    <label><input type="checkbox" id="suma" name="suma" value="si"> Promedio</label><br>
+    <label><input type="checkbox" id="promedio" name="promedio" value="si"> Suma</label><br>
+    <label><input type="checkbox" id="conteo" name="conteo" value="si"> Conteo</label><br>
+    @ViewBag.promedio
+    @ViewBag.sumatoria
+    @ViewBag.Conteo
+    <input type="submit" value="BUSCAR" />
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Proveedor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Fecha</td>
+            <td>@item.Producto</td>
+            <td>@item.Cantidad</td>
+            <td>@item.Proveedor</td>
+        </tr>
+        }
+    </tbody>
+</table>
+
