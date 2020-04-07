@@ -22,6 +22,36 @@ namespace Sistema_Facturacion.Controllers
 
             return View(data.ToList());
         }
+        [HttpPost]
+        public ActionResult Index(string nombre,string email)
+        {
+            IEnumerable<Proveedor> data;
+            if (nombre != string.Empty && email != string.Empty)
+            {
+                string query = "SELECT [Id],[RNC_Cedula],[Nombre],[Telefono],[Email],[Discriminator] " +
+                "FROM [SistemaFacturacion].[dbo].[Personas] where Discriminator = 'Proveedor' and Nombre like '" + nombre + "%' and Email like '" + email + "%'";
+                data = db.Database.SqlQuery<Proveedor>(query);
+            }
+            else if (nombre == string.Empty && email == string.Empty)
+            {
+                string query = "SELECT [Id],[RNC_Cedula],[Nombre],[Telefono],[Email],[Discriminator] " +
+                    "FROM [SistemaFacturacion].[dbo].[Personas] where Discriminator = 'Proveedor' ";
+                data = db.Database.SqlQuery<Proveedor>(query);
+            }
+            else if (nombre == string.Empty && email != string.Empty)
+            {
+                string query = "SELECT [Id],[RNC_Cedula],[Nombre],[Telefono],[Email],[Discriminator] " +
+                "FROM [SistemaFacturacion].[dbo].[Personas] where Discriminator = 'Proveedor' and Email like '" + email + "%'";
+                data = db.Database.SqlQuery<Proveedor>(query);
+            }
+            else {
+                string query = "SELECT [Id],[RNC_Cedula],[Nombre],[Telefono],[Email],[Discriminator] " +
+                "FROM [SistemaFacturacion].[dbo].[Personas] where Discriminator = 'Proveedor' and Nombre like '" + nombre + "%'";
+                 data=db.Database.SqlQuery<Proveedor>(query);
+            }
+
+            return View(data.ToList());
+        }
 
         // GET: Proveedors/Details/5
         public ActionResult Details(int? id)

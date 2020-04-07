@@ -1,50 +1,48 @@
-﻿@model IEnumerable<Sistema_Facturacion.Models.Proveedor>
-
+﻿@model List<Sistema_Facturacion.Models.VistaProductos>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Productos";
 }
 
-<h2>Index</h2>
-
+<h2>Productos</h2>
+<form action="../Productoes" method="post">
+    <input type="text" name="busqueda" placeholder="Nombre producto" />
+    <input type="submit" value="BUSCAR" />
+</form>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Productos.First().Nombre)
+            @Html.DisplayName("Producto")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Productos.First().Precio)
+            @Html.DisplayName("Precio")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Nombre)
+            @Html.DisplayName("Proveedor")
         </th>
         <th></th>
     </tr>
 
-@foreach (var proveedor in Model) {
-
-    foreach (var item in proveedor.Productos)
+    @foreach (var item in Model)
     {
-
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Precio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => proveedor.Nombre)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.producto)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Precio)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.proveedor)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+        @Html.ActionLink("Details", "Details", new { id = item.id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.id })
+    </td>
+</tr>
     }
-}
 
 </table>
