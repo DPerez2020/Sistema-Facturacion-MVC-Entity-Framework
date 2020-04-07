@@ -1,0 +1,27 @@
+﻿@model List<Sistema_Facturacion.Models.VistaFactura>
+@{
+    ViewBag.Title = "HistorialFacturas";
+}
+
+<h2>Historial Facturas</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Fecha</td>
+            <td>@item.Cliente</td>
+            <td>@item.TotalPagado</td>
+            <td>@Html.ActionLink("Detalle","detalleFactura",new {id=item.Id })</td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -17,10 +17,35 @@ namespace Sistema_Facturacion.Controllers
         // GET: Productoes
         public ActionResult Index()
         {
-            var data=db.Proveedores.Include(x => x.Productos).ToList();
-            return View("Index",data);
+            //var data=db.Proveedores.Include(x => x.Productos).ToList();
+            var productos = from a in db.Productos
+                            join b in db.Proveedores
+                            on a.ProveedorId equals b.Id
+                            select new VistaProductos { id = a.Id, producto = a.Nombre, Precio = a.Precio, proveedor = b.Nombre };
+            return View("Index", productos.ToList());
         }
 
+        [HttpPost]
+        public ActionResult Index(string busqueda)
+        {
+            if (busqueda == string.Empty)
+            {
+                var productos = from a in db.Productos
+                                join b in db.Proveedores
+                                on a.ProveedorId equals b.Id
+                                select new VistaProductos { id = a.Id, producto = a.Nombre, Precio = a.Precio, proveedor = b.Nombre };
+                return View("Index", productos.ToList());
+            }
+            else
+            {
+                var productos = from a in db.Productos
+                                join b in db.Proveedores
+                                on a.ProveedorId equals b.Id
+                                where a.Nombre.StartsWith(busqueda)
+                                select new VistaProductos { id = a.Id, producto = a.Nombre, Precio = a.Precio, proveedor = b.Nombre };
+                return View("Index", productos.ToList());
+            }
+        }
         // GET: Productoes/Details/5
         public ActionResult Details(int? id)
         {

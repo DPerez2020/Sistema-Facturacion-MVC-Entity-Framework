@@ -1,10 +1,17 @@
-﻿@model IEnumerable<Sistema_Facturacion.Models.Categoria>
+﻿@model List<Sistema_Facturacion.Models.VistaClientes>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Clientes</h2>
+<form action="../Clientes" method="post">
+    <input type="text" name="nombre" placeholder="Nombre cliente" />
+    @Html.DropDownList("categoria", new SelectList(ViewBag.lista, "Id", "Descripcion"),"Seleccionar")
+    <input type="submit" value="BUSCAR" />
+</form>
+
+<p>El conteo total es de @ViewBag.Conteo</p>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,50 +19,46 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Clientes[0].RNC_Cedula)
+            @Html.DisplayNameFor(model => model[0].RNC_Cedula)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Clientes[0].Nombre)
+            @Html.DisplayNameFor(model => model[0].nombre)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Clientes[0].Telefono)
+            @Html.DisplayNameFor(model => model[0].telefono)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Clientes[0].Email)
+            @Html.DisplayNameFor(model => model[0].email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Clientes[0].CategoriaId);
+            @Html.DisplayNameFor(model => model[0].categoria);
         </th>
     </tr>
 
-@foreach (var item in Model) {
-    if (item.Clientes.Count!=0) {
-        foreach (var cliente in item.Clientes)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem=>cliente.RNC_Cedula)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => cliente.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => cliente.Telefono)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => cliente.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem=>item.Descripcion)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id=cliente.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id=cliente.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=cliente.Id })
-                </td>
-            </tr>
-        }
+    @foreach (var cliente in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.RNC_Cedula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.categoria)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = cliente.id }) |
+                @Html.ActionLink("Details", "Details", new { id = cliente.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = cliente.id })
+            </td>
+        </tr>
     }
-}
 
 </table>

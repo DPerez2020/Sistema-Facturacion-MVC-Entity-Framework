@@ -4,7 +4,13 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Proveedores</h2>
+
+<form action="../Proveedors" method="post">
+    <input type="text" name="nombre" placeholder="Nombre proveedor" />
+    <input type="text" name="email" placeholder="Email del proveedor" />
+    <input type="submit" value="BUSCAR" />
+</form>
 
 <p>
     @Html.ActionLink("Create New", "Create")
