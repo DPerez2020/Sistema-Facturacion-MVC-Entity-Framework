@@ -19,8 +19,55 @@ namespace Sistema_Facturacion.Controllers
         // GET: Clientes
         public  ActionResult Index()
         {
-            var datos=db.Categorias.Include(x => x.Clientes).ToList();
-            return View("Index",datos);
+            ViewBag.lista = db.Categorias.ToList();
+            var clientes = from a in db.Clientes
+                            join b in db.Categorias
+                            on a.CategoriaId equals b.Id
+                            select new VistaClientes { id = a.Id,RNC_Cedula=a.RNC_Cedula, nombre = a.Nombre,telefono = a.Telefono, email = a.Email,categoria=b.Descripcion };
+            return View("Index", clientes.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Index(string nombre,int? categoria)
+        {
+            ViewBag.lista = db.Categorias.ToList();
+            if (nombre == string.Empty && categoria == null)
+            {
+                var clientes = from a in db.Clientes
+                               join b in db.Categorias
+                               on a.CategoriaId equals b.Id
+                               select new VistaClientes { id = a.Id, RNC_Cedula = a.RNC_Cedula, nombre = a.Nombre, telefono = a.Telefono, email = a.Email, categoria = b.Descripcion };
+                return View("Index", clientes.ToList());
+            }
+            else if (nombre != string.Empty && categoria != null)
+            {
+                var clientes = from a in db.Clientes
+                               join b in db.Categorias
+                               on a.CategoriaId equals b.Id
+                               where a.Nombre.StartsWith(nombre) && a.CategoriaId == categoria
+                               select new VistaClientes { id = a.Id, RNC_Cedula = a.RNC_Cedula, nombre = a.Nombre, telefono = a.Telefono, email = a.Email, categoria = b.Descripcion };
+                ViewBag.Conteo = clientes.ToList().Count;
+                return View("Index", clientes.ToList());
+            }
+            else if (nombre == string.Empty && categoria != null)
+            {
+                var clientes = from a in db.Clientes
+                               join b in db.Categorias
+                               on a.CategoriaId equals b.Id
+                               where a.CategoriaId == categoria
+                               select new VistaClientes { id = a.Id, RNC_Cedula = a.RNC_Cedula, nombre = a.Nombre, telefono = a.Telefono, email = a.Email, categoria = b.Descripcion };
+                ViewBag.Conteo = clientes.ToList().Count;
+                return View("Index", clientes.ToList());
+
+            }
+            else {
+                var clientes = from a in db.Clientes
+                               join b in db.Categorias
+                               on a.CategoriaId equals b.Id
+                               where a.Nombre.StartsWith(nombre)
+                               select new VistaClientes { id = a.Id, RNC_Cedula = a.RNC_Cedula, nombre = a.Nombre, telefono = a.Telefono, email = a.Email, categoria = b.Descripcion };
+                return View("Index", clientes.ToList());
+            }
         }
 
 
