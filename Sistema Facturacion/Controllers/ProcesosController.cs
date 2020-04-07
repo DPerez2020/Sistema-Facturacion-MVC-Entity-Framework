@@ -619,6 +619,7 @@ namespace Sistema_Facturacion.Controllers
 
         public ActionResult HistorialFacturas() {
 
+            ViewBag.Listacliente = db.Clientes.ToList();
             var facturas = from a in db.Facturacions
                            join b in db.Clientes on a.Id_Cliente equals b.Id
                            select new VistaFactura
@@ -633,6 +634,270 @@ namespace Sistema_Facturacion.Controllers
 
             return View(facturas.ToList());
         }
+        [HttpPost]
+        public ActionResult HistorialFacturas(DateTime? fecha, int? clienteId, string suma, string promedio, string conteo)
+        {
+            ViewBag.Listacliente = db.Clientes.ToList();
+            if (fecha != null && clienteId == null)
+            {
+                var fechatransformada = fecha.Value.AddDays(1);
+                var facturas = from a in db.Facturacions
+                               join b in db.Clientes on a.Id_Cliente equals b.Id
+                               where a.Fecha >= fecha.Value && a.Fecha <= fechatransformada
+                               select new VistaFactura
+                               {
+                                   Id = a.Id,
+                                   Cliente = b.Nombre,
+                                   TotalProducto = a.TotalProducto,
+                                   TotalPagado = a.TotalPagado,
+                                   Fecha = a.Fecha,
+                                   DetalleFacturas = a.DetalleFacturas
+                               };
+                if (suma == null && promedio == null && conteo == null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio == null && conteo == null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio != null && conteo == null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio == null && conteo != null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = facturas.Count();
+                }
+                else if (suma == null && promedio == null && conteo != null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = facturas.Count();
+                }
 
+                else if (suma == null && promedio != null && conteo != null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = facturas.Count();
+                }
+                else if (suma == null && promedio != null && conteo == null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = 0;
+                }
+                else
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = facturas.Count();
+                }
+                return View(facturas.ToList());
+            }
+            else if (clienteId != null && fecha == null)
+            {
+
+                var facturas = from a in db.Facturacions
+                               join b in db.Clientes on a.Id_Cliente equals b.Id
+                               where a.Id_Cliente == clienteId
+                               select new VistaFactura
+                               {
+                                   Id = a.Id,
+                                   Cliente = b.Nombre,
+                                   TotalProducto = a.TotalProducto,
+                                   TotalPagado = a.TotalPagado,
+                                   Fecha = a.Fecha,
+                                   DetalleFacturas = a.DetalleFacturas
+                               };
+                if (suma == null && promedio == null && conteo == null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio == null && conteo == null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio != null && conteo == null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio == null && conteo != null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = facturas.Count();
+                }
+                else if (suma == null && promedio == null && conteo != null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = facturas.Count();
+                }
+
+                else if (suma == null && promedio != null && conteo != null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = facturas.Count();
+                }
+                else if (suma == null && promedio != null && conteo == null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = 0;
+                }
+                else
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = facturas.Count();
+                }
+                return View(facturas.ToList());
+            }
+            else if (fecha==null && clienteId==null) {
+                var facturas = from a in db.Facturacions
+                               join b in db.Clientes on a.Id_Cliente equals b.Id
+                               select new VistaFactura
+                               {
+                                   Id = a.Id,
+                                   Cliente = b.Nombre,
+                                   TotalProducto = a.TotalProducto,
+                                   TotalPagado = a.TotalPagado,
+                                   Fecha = a.Fecha,
+                                   DetalleFacturas = a.DetalleFacturas
+                               };
+                if (suma == null && promedio == null && conteo == null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio == null && conteo == null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio != null && conteo == null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio == null && conteo != null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = facturas.Count();
+                }
+                else if (suma == null && promedio == null && conteo != null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = facturas.Count();
+                }
+
+                else if (suma == null && promedio != null && conteo != null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = facturas.Count();
+                }
+                else if (suma == null && promedio != null && conteo == null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = 0;
+                }
+                else
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = facturas.Count();
+                }
+                return View(facturas.ToList());
+            }
+            else {
+                var fechatransformada = fecha.Value.AddDays(1);
+                var facturas = from a in db.Facturacions
+                               join b in db.Clientes on a.Id_Cliente equals b.Id
+                               where a.Fecha >= fecha.Value && a.Fecha <= fechatransformada && a.Id_Cliente == clienteId
+                               select new VistaFactura
+                               {
+                                   Id = a.Id,
+                                   Cliente = b.Nombre,
+                                   TotalProducto = a.TotalProducto,
+                                   TotalPagado = a.TotalPagado,
+                                   Fecha = a.Fecha,
+                                   DetalleFacturas = a.DetalleFacturas
+                               };
+                if (suma == null && promedio == null && conteo == null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio == null && conteo == null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio != null && conteo == null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = 0;
+                }
+                else if (suma != null && promedio == null && conteo != null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = facturas.Count();
+                }
+                else if (suma == null && promedio == null && conteo != null)
+                {
+                    ViewBag.promedio = 0;
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = facturas.Count();
+                }
+
+                else if (suma == null && promedio != null && conteo != null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = facturas.Count();
+                }
+                else if (suma == null && promedio != null && conteo == null)
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = 0;
+                    ViewBag.Conteo = 0;
+                }
+                else
+                {
+                    ViewBag.promedio = facturas.Average(x => x.TotalPagado);
+                    ViewBag.sumatoria = facturas.Sum(x => x.TotalPagado);
+                    ViewBag.Conteo = facturas.Count();
+                }
+                return View(facturas.ToList());
+            }
+        }
     }
 }

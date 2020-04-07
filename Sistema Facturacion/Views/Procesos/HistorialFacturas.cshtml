@@ -5,6 +5,19 @@
 
 <h2>Historial Facturas</h2>
 
+<form action="../Procesos/HistorialFacturas" method="post">
+    @Html.DropDownList("clienteId", new SelectList(ViewBag.Listacliente, "Id", "Nombre"), "Seleccionar")
+    <input type="date" name="fecha" />
+    <p>Que deseas ver?</p>
+    <label><input type="checkbox" id="suma" name="suma" value="si"> Promedio</label><br>
+    <label><input type="checkbox" id="promedio" name="promedio" value="si"> Suma</label><br>
+    <label><input type="checkbox" id="conteo" name="conteo" value="si"> Conteo</label><br>
+    @ViewBag.promedio
+    @ViewBag.sumatoria
+    @ViewBag.Conteo
+    <input type="submit" value="BUSCAR" />
+</form>
+
 <table>
     <thead>
         <tr>
