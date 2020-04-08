@@ -32,6 +32,8 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         @Html.ActionLink("Entrada productos", "Entradas", "Procesos", null, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Historial Entrada productos", "HistorialEntradas", "Procesos", null, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Historial Facturas", "HistorialFacturas", "Procesos", null, new { @class = "dropdown-item" })
                         @Html.ActionLink("Clientes", "Index", "Clientes", null, new { @class = "dropdown-item" })
                         @Html.ActionLink("Categorias cliente", "Index", "Categorias", null, new { @class = "dropdown-item" })
                         @Html.ActionLink("Proveedores", "Index", "Proveedors", null, new { @class = "dropdown-item" })

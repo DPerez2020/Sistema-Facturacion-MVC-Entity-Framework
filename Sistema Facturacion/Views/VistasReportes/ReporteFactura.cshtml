@@ -2,7 +2,26 @@
 @{
     Layout = null;
 }
-
+@if (ViewBag.suma != null)
+{
+    <p>La suma total es: @ViewBag.suma</p>
+}
+@if (ViewBag.promedio != null)
+{
+    <p>El total es: @ViewBag.promedio</p>
+}
+@if (ViewBag.conteo != null)
+{
+<p>El conteo total es: @ViewBag.conteo</p>
+}
+@if (ViewBag.mayor != null)
+{
+<p>El numero mayor es: @ViewBag.mayor</p>
+}
+@if (ViewBag.menor != null)
+{
+    <p>El numero menor es: @ViewBag.menor</p>
+}
 <table>
     <thead>
         <tr>

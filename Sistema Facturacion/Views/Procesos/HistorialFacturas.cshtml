@@ -6,15 +6,34 @@
 <h2>Historial Facturas</h2>
 
 <form action="../Procesos/HistorialFacturas" method="post" onsubmit="guardar()">
-    @Html.DropDownList("clienteId", new SelectList(ViewBag.Listacliente, "Id", "Nombre"), "Seleccionar",new {id="cliente" })
-    <input type="date" name="fecha" id="fecha"/>
+    @Html.DropDownList("clienteId", new SelectList(ViewBag.Listacliente, "Id", "Nombre"), "Seleccionar", new { id = "cliente" })
+    <input type="date" name="fecha" id="fecha" />
     <p>Que deseas ver?</p>
-    <label><input type="checkbox" id="suma" name="suma" value="si"> Promedio</label><br>
-    <label><input type="checkbox" id="promedio" name="promedio" value="si"> Suma</label><br>
-    <label><input type="checkbox" id="conteo" name="conteo" value="si"> Conteo</label><br>
-    @ViewBag.promedio
-    @ViewBag.sumatoria
-    @ViewBag.Conteo
+    <label><input type="checkbox" id="suma" name="suma"> Promedio</label><br>
+    <label><input type="checkbox" id="promedio" name="promedio"> Suma</label><br>
+    <label><input type="checkbox" id="conteo" name="conteo"> Conteo</label><br>
+    <label><input type="checkbox" id="mayor" name="mayor"> Mayor valor</label><br>
+    <label><input type="checkbox" id="menor" name="menor"> Menor valor</label><br>
+    @if (ViewBag.suma != null)
+    {
+        <p>La suma total es: @ViewBag.suma</p>
+    }
+    @if (ViewBag.promedio != null)
+    {
+        <p>El total es: @ViewBag.promedio</p>
+    }
+    @if (ViewBag.conteo != null)
+    {
+        <p>El conteo total es: @ViewBag.conteo</p>
+    }
+    @if (ViewBag.mayor != null)
+    {
+        <p>El numero mayor es: @ViewBag.mayor</p>
+    }
+    @if (ViewBag.menor != null)
+    {
+        <p>El numero menor es: @ViewBag.menor</p>
+    }
     <input type="submit" value="BUSCAR" />
 </form>
 
@@ -25,6 +44,9 @@
     <input type="hidden" name="suma_" id="sumav" />
     <input type="hidden" name="promedio_" id="promediov" />
     <input type="hidden" name="conteo_" id="conteov" />
+    <input type="hidden" name="mayor_" id="mayorv" />
+    <input type="hidden" name="menor_" id="menorv" />
+
     <input type="submit" value="Generar reporte" />
 }
 
@@ -35,12 +57,16 @@
         var suma_ = document.getElementById("suma").value;
         var promedio_ = document.getElementById("promedio").value;
         var conteo_ = document.getElementById("conteo").value;
+        var mayor_ = document.getElementById("mayor").value;
+        var menor_ = document.getElementById("menor").value;
 
         localStorage.setItem("cliente", cliente);
         localStorage.setItem("fecha", fecha);
         localStorage.setItem("suma_", suma_);
         localStorage.setItem("promedio_", promedio_);
         localStorage.setItem("conteo_", conteo_);
+        localStorage.setItem("mayor_", mayor_);
+        localStorage.setItem("menor_", menor_);
 
     }
     function obtenerDatos() {
@@ -49,12 +75,16 @@
         var suma_ = localStorage.getItem("suma_");
         var promedio_ = localStorage.getItem("promedio_");
         var conteo_ = localStorage.getItem("conteo_");
+        var mayor_ = localStorage.getItem("mayor_");
+        var menor_ = localStorage.getItem("menor_");
 
         document.getElementById("clienteId").value = cliente;
-        document.getElementById("fechav").value=fecha;
-        document.getElementById("sumav").value=suma_;
-        document.getElementById("promediov").value=promedio_;
-        document.getElementById("conteov").value=conteo_;
+        document.getElementById("fechav").value = fecha;
+        document.getElementById("sumav").value = suma_;
+        document.getElementById("promediov").value = promedio_;
+        document.getElementById("conteov").value = conteo_;
+        document.getElementById("mayorv").value = mayor_;
+        document.getElementById("menorv").value = menor_;
         localStorage.clear();
     }
 </script>
@@ -73,7 +103,7 @@
             <tr>
                 <td>@item.Fecha</td>
                 <td>@item.Cliente</td>
-                <td>@item.TotalPagado</td>
+                <td>@item.TotalProducto</td>
                 <td>@Html.ActionLink("Detalle", "detalleFactura", new { id = item.Id })</td>
             </tr>
         }
