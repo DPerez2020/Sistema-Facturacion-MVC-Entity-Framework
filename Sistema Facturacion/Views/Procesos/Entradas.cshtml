@@ -12,14 +12,14 @@
         <div class="form-group">
             <div class="col-md-10">
                 @Html.Label("Proveedor", htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.DropDownListFor(s => s.ProveedorId, new SelectList(ViewBag.ListaProveedores, "Id", "Nombre"),new {id="proveedores" })
+                @Html.DropDownListFor(s => s.ProveedorId, new SelectList(ViewBag.ListaProveedores, "Id", "Nombre"),new {id="proveedores",@class="form-control" })
                 @Html.ValidationMessageFor(model => model.Proveedor.Nombre, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-10">
                 @Html.Label("Producto", htmlAttributes: new { @class = "control-label col-md-2" })
-                @Html.DropDownListFor(s => s.ProductoId, new SelectList(ViewBag.ListaProductos, "Id", "Nombre"),new {id="productos" })
+                @Html.DropDownListFor(s => s.ProductoId, new SelectList(ViewBag.ListaProductos, "Id", "Nombre"),new {id="productos" ,@class="form-control"})
                 @Html.ValidationMessageFor(model => model.Producto.Nombre, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -31,13 +31,15 @@
             </div>
         </div>
         <div class="col-md-10">
-            @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label col-md-2" })
-            <P>@DateTime.Now.ToString()</P>
+            <P>
+                @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label col-md-2" })
+                @DateTime.Now.ToString()
+            </P>
 
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Agregar" class="btn btn-default" />
+                <input type="submit" value="Agregar" class="btn btn-primary" />
             </div>
         </div>
     </div>

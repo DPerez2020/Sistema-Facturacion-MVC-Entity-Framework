@@ -2,27 +2,41 @@
 @{
     Layout = null;
 }
-@ViewBag.promedio
-@ViewBag.sumatoria
-@ViewBag.Conteo
-    <table>
-        <thead>
+@Styles.Render("~/Content/css")
+
+
+<h1>Reporte de entradas</h1>
+
+@if (ViewBag.promedio != null)
+{
+    <p>El promedio es:  @ViewBag.promedio</p>
+}
+@if (ViewBag.suma != null)
+{
+<p>La sumatoria es: @ViewBag.suma</p>
+}
+@if (ViewBag.Conteo != null)
+{
+    <p>El conteo es de : @ViewBag.Conteo</p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Proveedor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>Fecha</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Proveedor</th>
+                <td>@item.Fecha</td>
+                <td>@item.Producto</td>
+                <td>@item.Cantidad</td>
+                <td>@item.Proveedor</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Fecha</td>
-                    <td>@item.Producto</td>
-                    <td>@item.Cantidad</td>
-                    <td>@item.Proveedor</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>

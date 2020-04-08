@@ -3,15 +3,15 @@
     ViewBag.Title = "Recibo";
     Layout = null;
 }
-
+@Styles.Render("~/Content/css")
 <h2>Recibo</h2>
 
-<label>Cliente: @ViewBag.cliente.Nombre</label>
-<label>Email: @ViewBag.cliente.Email</label>
-<label>Fecha: @Model.Fecha</label>
+<h6>Cliente: @ViewBag.cliente.Nombre</h6>
+<h6>Email: @ViewBag.cliente.Email</h6>
+<h6>Fecha: @Model.Fecha</h6>
 
 
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Producto</th>
@@ -23,12 +23,12 @@
     <tbody>
         @foreach (var item in ViewBag.Detalle)
         {
-        <tr>
-            <td>@item.NombreProducto </td>
-            <td>@item.PrecioProduco</td>
-            <td>@item.CantidadProducto</td>
-            <td>@item.Total</td>
-        </tr>
+            <tr>
+                <td>@item.NombreProducto </td>
+                <td>@item.PrecioProduco</td>
+                <td>@item.CantidadProducto</td>
+                <td>@item.Total</td>
+            </tr>
         }
     </tbody>
 </table>

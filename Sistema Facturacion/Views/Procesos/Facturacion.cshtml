@@ -5,13 +5,13 @@
 }
 
 <h2>Facturacion</h2>
-@using (Html.BeginForm("Facturar", "Procesos", FormMethod.Post))
+@using (Html.BeginForm("Facturar", "Procesos", FormMethod.Post,new { onsubmit="return validar()" }))
 {
 <div class="form-horizontal">
     <div class="form-group">
         <div class="col-md-10">
             @Html.Label("Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.DropDownListFor(s => s.Id_Cliente, new SelectList(ViewBag.ListaClientes, "Id", "Nombre"), new { id = "idcliente" })
+            @Html.DropDownListFor(s => s.Id_Cliente, new SelectList(ViewBag.ListaClientes, "Id", "Nombre"),"Seleccionar", new { id = "idcliente" ,@class="form-control" })
             @Html.ValidationMessageFor(model => model.Id_Cliente, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -33,23 +33,25 @@
     </div>
     <div class="form-group">
         <div class="col-md-10 ">
-            @Html.LabelFor(x => x.TotalProducto, htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.TextBoxFor(s => s.TotalProducto, htmlAttributes: new { @class = "col-md-2", id = "totalProducto", type = "number" })
-            @Html.ValidationMessageFor(model => model.TotalProducto, "", new { @class = "text-danger" })
+            @Html.Label("Total Producto", htmlAttributes: new { @class = "control-label col-md-2" })
+            <label id="totalProductoLabel" class="control-label col-md-2" >0</label>
+            <input type="hidden" name="TotalProducto" id="TotalProducto"  value="0"/>
         </div>
         <div class="col-md-10">
-            @Html.LabelFor(x => x.TotalPagado, htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.EditorFor(s => s.TotalPagado, new { @class = "custom-control-input col-md-2" })
+            @Html.Label("Total pagado", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(s => s.TotalPagado, new { @class = "form-control", id="totalPagado", type="number" })
             @Html.ValidationMessageFor(model => model.TotalPagado, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-10">
-        @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label col-md-2" })
-        <P>@DateTime.Now.ToString()</P>
+        <P>
+            @Html.LabelFor(model => model.Fecha, htmlAttributes: new { @class = "control-label col-md-2" })
+            @DateTime.Now.ToString()
+        </P>
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Facturar" class="btn btn-default" />
+            <input type="submit" value="Facturar"  class="btn btn-primary"/>
         </div>
     </div>
 </div>
@@ -57,21 +59,21 @@
     <div class="form-group">
         <div class="col-md-10">
             @Html.Label("Producto", htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.DropDownListFor(s => s.DetalleFacturas.First().Producto.Nombre, new SelectList(ViewBag.ListaProducto, "Precio", "Nombre"), new { id = "producto" })
+            @Html.DropDownListFor(s => s.DetalleFacturas.First().Producto.Nombre, new SelectList(ViewBag.ListaProducto, "Precio", "Nombre"), new { id = "producto" ,@class="form-control"})
             @Html.ValidationMessageFor(model => model.DetalleFacturas.First().Producto.Nombre, "", new { @class = "text-danger" })
         </div>
         Cantidad
-        <input type="number" min="0" id="cantidad" />
-        <input type="button" onclick="agregarProducto()" value="Agregar" />
+        <input type="number" min="0" id="cantidad" class="form-control" />
+        <input type="button" onclick="agregarProducto()" value="Agregar"  class="btn btn-primary"/>
     </div>
 
     <div id="divConcepto">
-        <table>
+        <table class="table">
             <thead>
                 <tr>
-                    <th>Producto</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
                 </tr>
             </thead>
             <tbody id="tablaConceptos">
@@ -81,24 +83,52 @@
     </div>
 }
 <script>
+    function validar() {
+        var cliente = document.getElementById("idcliente");
+        var TotalProducto = document.getElementById("TotalProducto");
+        var totalPagado = document.getElementById("totalPagado");
+        var cliente = document.getElementById("idcliente");
+        if (cliente.value) {
+            if (TotalProducto.value == 0) {
+                 alert("La factura debe de contener productos.")
+                return false;
+            } else {
+                if ( parseFloat(totalPagado.value) < parseFloat(TotalProducto.value)) {
+                    alert("El total pagado no puede ser menor que el total del producto.")
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+        else {
+            alert("Debe de seleccionar un cliente");
+            return false;
+        }
+    }
+</script>
+<script>
     var num = 0;
-    var totalProducto = document.getElementById("totalProducto");
-    totalProducto.value = 0;
+    //var totalProducto = document.getElementById("totalProducto");
+    var totalProductoLabel = document.getElementById("totalProductoLabel")
+    totalProductoLabel.textContent = 0;
     function agregarProducto() {
         var tablaConceptos = document.getElementById("tablaConceptos");
         var producto = document.getElementById("producto");
         var cantidad = document.getElementById("cantidad")
         var concepto = document.getElementById("concepto");
-        var totalProducto = document.getElementById("totalProducto");
+        var totalProducto = document.getElementById("TotalProducto");
         var totalaPagar = document.getElementById("totalApagar");
         var tr = document.createElement("tr");
         var descuento = document.getElementById("descuento").textContent;
         tr.innerHTML =
-            `<td>${producto.options[producto.selectedIndex].innerText}</td>
-            <td>${producto.value}</td>
-            <td>${cantidad.value}</td>`;
+            `<td scope="row">${producto.options[producto.selectedIndex].innerText}</td>
+            <td scope="row">${producto.value}</td>
+            <td scope="row">${cantidad.value}</td>`;
         tablaConceptos.appendChild(tr);
-        totalProducto.value = parseFloat(totalProducto.value)+(parseFloat(producto.value) * parseFloat(cantidad.value))
+        totalProducto.value = parseFloat(totalProducto.value) + (parseFloat(producto.value) * parseFloat(cantidad.value))
+        totalProductoLabel.textContent = totalProducto.value;
         if (descuento == "5%") {
             totalaPagar.textContent = parseFloat(totalProducto.value)+parseFloat(totalProducto.value) * 0.18 - parseFloat(totalProducto.value) * 0.05
         }
@@ -125,6 +155,10 @@
         concepto.appendChild(hiddenNombre);
         concepto.appendChild(hiddenPrecio);
         concepto.appendChild(hiddenCantidad);
+
+        //Remueve el producto introducido
+        producto.remove(producto.selectedIndex);
+
         num++;
     }
 </script>
@@ -135,12 +169,13 @@
         $("#idcliente").change(function () {
             //Obtenemos el valor seleccionado en el drodownlist
             let value = $(this).val().toString();
+            if (value) {
                 $.ajax({
                     //Metodo de peticion
                     type: 'POST',
                     //Se especifica el action y el controlador
                     url: "@Url.Action("obtenerClientes", "Procesos")",
-                    data: {idcliente: value },
+                    data: { idcliente: value },
                     //En caso de que todo salga bien ejecuta esto y recibe como parametro el resultado que se envia desde el action
                     success: function (response) {
                         console.log(response.categoria)
@@ -154,8 +189,14 @@
                     },
                     failure: function (response) {
                         alert(response);
+                        $("#descuento").text("");
+                        $("#tipoCliente").text("");
                     }
                 });
+            } else {
+                $("#descuento").text("");
+                $("#tipoCliente").text("")
+            }
         });
     });
 </script>

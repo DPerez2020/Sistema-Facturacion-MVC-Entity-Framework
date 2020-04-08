@@ -4,28 +4,39 @@
 }
 
 <h2>Historial Entradas</h2>
-<form action="../Procesos/HistorialEntradas" method="post" onsubmit="guardar">
-    @Html.DropDownList("proveedorId", new SelectList(ViewBag.ListaProveedores, "Id", "Nombre"), "Seleccionar", new { id = "proveedor" })
-    @Html.DropDownList("productoId", new SelectList(ViewBag.ListaProductos, "Id", "Nombre"), "Seleccionar", new { id = "producto" })
+<form action="../Procesos/HistorialEntradas" method="post" onsubmit="guardar()">
+    <label>Proveedore</label>
+    @Html.DropDownList("proveedorId", new SelectList(ViewBag.ListaProveedores, "Id", "Nombre"), "Seleccionar", new { id = "proveedor", @class = "form-control" })
+    <label>Productos</label>
+    @Html.DropDownList("productoId", new SelectList(ViewBag.ListaProductos, "Id", "Nombre"), "Seleccionar", new { id = "producto", @class = "form-control" })
+    <label>Fecha</label>
     <input type="date" name="fecha" id="fecha" />
     <p>Que deseas ver?</p>
-    <label><input type="checkbox" id="suma" name="suma" value="si"> Promedio</label><br>
-    <label><input type="checkbox" id="promedio" name="promedio" value="si"> Suma</label><br>
-    <label><input type="checkbox" id="conteo" name="conteo" value="si"> Conteo</label><br>
-    @ViewBag.promedio
-    @ViewBag.sumatoria
-    @ViewBag.Conteo
-    <input type="submit" value="BUSCAR" />
+    <div class="form-check">
+        <label><input type="checkbox" id="suma" name="suma" class="form-check-input"> Suma</label><br>
+        <label><input type="checkbox" id="promedio" name="promedio" class="form-check-input"> Promedio</label><br>
+        <label><input type="checkbox" id="conteo" name="conteo"  class="form-check-input"> Conteo</label><br>
+    </div>
+    <input type="submit" value="BUSCAR" class="btn btn-primary"/><br />
 </form>
-@using (Html.BeginForm("printHistorial", "Procesos", FormMethod.Post, new { onsubmit = "obtenerDatos()" }))
+@if (ViewBag.promedio!=null) { 
+    <p>El promedio es:  @ViewBag.promedio</p>   
+}
+@if (ViewBag.suma!=null) {
+<p>La sumatoria es: @ViewBag.suma</p>
+}
+@if (ViewBag.Conteo!=null) { 
+    <p>El conteo es de : @ViewBag.Conteo</p>
+}
+@using (Html.BeginForm("printHistorial", "Procesos", FormMethod.Post, new { onsubmit = "obtenerDatos()"}))
 {
-    <input type="hidden" name="productoId" id="proveedorv" />
+    <input type="hidden" name="productoId" id="productov" />
     <input type="hidden" name="fecha" id="fechav" />
-    <input type="hidden" name="proveedorId" id="productov" />
-    <input type="hidden" name="suma_" id="sumav" />
-    <input type="hidden" name="promedio_" id="promediov" />
-    <input type="hidden" name="conteo_" id="conteov" />
-    <input type="submit" value="Generar reporte" />
+    <input type="hidden" name="proveedorId" id="proveedorv" />
+    <input type="hidden" name="suma" id="sumav" />
+    <input type="hidden" name="promedio" id="promediov" />
+    <input type="hidden" name="conteo" id="conteov" />
+    <input type="submit" value="Generar reporte" class="btn btn-primary" />
 }
 
 <script>
@@ -36,7 +47,6 @@
         var suma_ = document.getElementById("suma").value;
         var promedio_ = document.getElementById("promedio").value;
         var conteo_ = document.getElementById("conteo").value;
-
 
         localStorage.setItem("productoid", productoid);
         localStorage.setItem("fecha", fecha);
@@ -53,17 +63,16 @@
         var suma_ = localStorage.getItem("suma_");
         var promedio_ = localStorage.getItem("promedio_");
         var conteo_ = localStorage.getItem("conteo_");
-
-        document.getElementById("proveedorv").value=productoid;
+        document.getElementById("proveedorv").value=proveedorId;
         document.getElementById("fechav").value=fecha;
-        document.getElementById("productov").value=proveedorId;
+        document.getElementById("productov").value=productoid;
         document.getElementById("sumav").value=suma_;
         document.getElementById("promediov").value=promedio_;
         document.getElementById("conteov").value=conteo_;
         localStorage.clear();
     }
 </script>
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Fecha</th>

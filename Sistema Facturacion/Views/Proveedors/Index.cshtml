@@ -7,9 +7,11 @@
 <h2>Proveedores</h2>
 
 <form action="../Proveedors" method="post" onsubmit="guardar">
-    <input type="text" name="nombre" placeholder="Nombre proveedor" id="nombre" />
-    <input type="text" name="email" placeholder="Email del proveedor" id="email" />
-    <input type="submit" value="BUSCAR" />
+    <label>Nombre</label>
+    <input type="text" name="nombre" placeholder="Nombre proveedor" id="nombre" class="form-control"/>
+    <label>Email</label>
+    <input type="text" name="email" placeholder="Email del proveedor" id="email" class="form-control"/>
+    <input type="submit" value="BUSCAR" class="btn btn-primary"/>
 </form>
 
 @using (Html.BeginForm("print", "proveedors", FormMethod.Post, new { onsubmit = "obtenerDatos()" }))
@@ -17,7 +19,7 @@
 
     <input type="hidden" name="nombre" placeholder="Nombre proveedor" id="nombrev"/>
     <input type="hidden" name="email" placeholder="Email del proveedor" id="emailv" />
-    <input type="submit" value="Generar reporte" />
+    <input type="submit" value="Generar reporte" class="btn btn-primary" />
 }
 
 <script>

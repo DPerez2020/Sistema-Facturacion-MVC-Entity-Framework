@@ -6,7 +6,8 @@
 <h2>Historial Facturas</h2>
 
 <form action="../Procesos/HistorialFacturas" method="post" onsubmit="guardar()">
-    @Html.DropDownList("clienteId", new SelectList(ViewBag.Listacliente, "Id", "Nombre"), "Seleccionar", new { id = "cliente" })
+    @Html.DropDownList("clienteId", new SelectList(ViewBag.Listacliente, "Id", "Nombre"), "Seleccionar", new { id = "cliente",@class="form-control" })
+    <label>Fecha</label>
     <input type="date" name="fecha" id="fecha" />
     <p>Que deseas ver?</p>
     <label><input type="checkbox" id="suma" name="suma"> Promedio</label><br>
@@ -34,7 +35,7 @@
     {
         <p>El numero menor es: @ViewBag.menor</p>
     }
-    <input type="submit" value="BUSCAR" />
+    <input type="submit" value="BUSCAR" class="btn btn-primary"/>
 </form>
 
 @using (Html.BeginForm("printFactura", "Procesos", FormMethod.Post, new { onsubmit = "obtenerDatos()" }))
@@ -47,7 +48,7 @@
     <input type="hidden" name="mayor_" id="mayorv" />
     <input type="hidden" name="menor_" id="menorv" />
 
-    <input type="submit" value="Generar reporte" />
+    <input type="submit" value="Generar reporte" class="btn btn-primary"/>
 }
 
 <script>
@@ -89,7 +90,7 @@
     }
 </script>
 
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Fecha</th>

@@ -22,11 +22,11 @@ namespace Sistema_Facturacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult printHistorial(int? productoId, DateTime? fecha, int? proveedorId, string suma_, string promedio_, string conteo_)
+        public ActionResult printHistorial(int? productoId, DateTime? fecha, int? proveedorId, string suma, string promedio, string conteo)
         {
-            return new ActionAsPdf("generarReportEntrada", new {productoId,fecha,proveedorId,suma_,promedio_,conteo_})
+            return new ActionAsPdf("generarReportEntrada", new {productoId,fecha,proveedorId,suma,promedio,conteo})
             {
-                FileName = "Reporte Producto.pdf",
+                FileName = "Reporte historial.pdf",
             };
         }
 
@@ -34,7 +34,7 @@ namespace Sistema_Facturacion.Controllers
         {
 
             var historial = getdata(productoId, fecha, proveedorId, suma, promedio, conteo);
-            return View("~/Views/VistasReportes/ReporteHistorial.cshtml", historial);
+            return View("~/Views/VistasReportes/ReporteEntradas.cshtml", historial);
         }
 
         public ActionResult HistorialEntradas() {

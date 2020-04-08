@@ -5,15 +5,15 @@
 
 <h2>Productos</h2>
 @using (Html.BeginForm("Index", "Productoes", FormMethod.Post, new { onsubmit = "guardar()" })) { 
-    <input type="text" name="nombre" placeholder="Nombre producto" id="nombre" />
-    <input type="submit" value="BUSCAR" />
+    <input type="text" name="nombre" placeholder="Nombre producto" id="nombre" class="form-control"/>
+    <input type="submit" value="BUSCAR" class="btn btn-primary"/>
 }
 
 @using (Html.BeginForm("print", "Productoes", FormMethod.Post, new { onsubmit = "obtenerDatos()" }))
 {
 
     <input type="hidden" name="nombre" id="nombrev" />
-    <input type="submit" value="Generar reporte" />
+    <input type="submit" value="Generar reporte" class="btn btn-primary" />
 }
 
 <script>
