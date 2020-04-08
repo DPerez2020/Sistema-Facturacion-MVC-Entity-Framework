@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Rotativa;
 using Sistema_Facturacion.Models;
 
 namespace Sistema_Facturacion.Controllers
@@ -22,9 +23,24 @@ namespace Sistema_Facturacion.Controllers
 
             return View(data.ToList());
         }
+
         [HttpPost]
-        public ActionResult Index(string nombre,string email)
+        public ActionResult print(string nombre, string email)
         {
+            return new ActionAsPdf("generarReport", new { nombre = nombre,email=email })
+            {
+                FileName = "Reporte Producto.pdf",
+            };
+        }
+
+        public ActionResult generarReport(string nombre,string email)
+        {
+
+            var productos = getdata(nombre,email);
+            return View("~/Views/VistasReportes/ReporteProveedores.cshtml", productos);
+        }
+
+        public IEnumerable<Proveedor> getdata(string nombre, string email) {
             IEnumerable<Proveedor> data;
             if (nombre != string.Empty && email != string.Empty)
             {
@@ -44,12 +60,20 @@ namespace Sistema_Facturacion.Controllers
                 "FROM [SistemaFacturacion].[dbo].[Personas] where Discriminator = 'Proveedor' and Email like '" + email + "%'";
                 data = db.Database.SqlQuery<Proveedor>(query);
             }
-            else {
+            else
+            {
                 string query = "SELECT [Id],[RNC_Cedula],[Nombre],[Telefono],[Email],[Discriminator] " +
                 "FROM [SistemaFacturacion].[dbo].[Personas] where Discriminator = 'Proveedor' and Nombre like '" + nombre + "%'";
-                 data=db.Database.SqlQuery<Proveedor>(query);
+                data = db.Database.SqlQuery<Proveedor>(query);
             }
+            return data;
+        }
 
+        [HttpPost]
+        public ActionResult Index(string nombre,string email)
+        {
+
+            var data=getdata(nombre,email);
             return View(data.ToList());
         }
 

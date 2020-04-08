@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Rotativa;
 using Sistema_Facturacion.Models;
 
 namespace Sistema_Facturacion.Controllers
@@ -26,25 +27,46 @@ namespace Sistema_Facturacion.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string busqueda)
+        public ActionResult print(string nombre)
         {
-            if (busqueda == string.Empty)
+            return new ActionAsPdf("generarReport", new { nombre = nombre})
+            {
+                FileName = "Reporte Producto.pdf",
+            };
+        }
+
+        public ActionResult generarReport(string nombre)
+        {
+
+            var productos = getdata(nombre);
+            return View("~/Views/VistasReportes/ReporteProducto.cshtml", productos);
+        }
+
+        private List<VistaProductos> getdata(string nombre){
+            if (nombre == string.Empty)
             {
                 var productos = from a in db.Productos
                                 join b in db.Proveedores
                                 on a.ProveedorId equals b.Id
                                 select new VistaProductos { id = a.Id, producto = a.Nombre, Precio = a.Precio, proveedor = b.Nombre };
-                return View("Index", productos.ToList());
+                return productos.ToList();
             }
             else
             {
                 var productos = from a in db.Productos
                                 join b in db.Proveedores
                                 on a.ProveedorId equals b.Id
-                                where a.Nombre.StartsWith(busqueda)
+                                where a.Nombre.StartsWith(nombre)
                                 select new VistaProductos { id = a.Id, producto = a.Nombre, Precio = a.Precio, proveedor = b.Nombre };
-                return View("Index", productos.ToList());
+                return  productos.ToList();
             }
+        } 
+
+        [HttpPost]
+        public ActionResult Index(string nombre)
+        {
+            var productos = getdata(nombre);
+            return View("Index", productos);
         }
         // GET: Productoes/Details/5
         public ActionResult Details(int? id)

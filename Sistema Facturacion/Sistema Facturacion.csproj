@@ -189,7 +189,6 @@
     <Compile Include="Models\Facturacion.cs" />
     <Compile Include="Models\Producto.cs" />
     <Compile Include="Models\Proveedor.cs" />
-    <Compile Include="Models\VistaFactura.cs" />
     <Compile Include="Models\VistaClientes.cs" />
     <Compile Include="Models\VistaEntrada.cs" />
     <Compile Include="Models\VistaFactura.cs" />
@@ -354,10 +353,16 @@
     <Content Include="Views\Productoes\Index.cshtml" />
     <Content Include="Views\Procesos\Entradas.cshtml" />
     <Content Include="Views\Procesos\Facturacion.cshtml" />
-    <Content Include="Views\Procesos\Recibo.cshtml" />
+    <Content Include="Views\VistasReportes\Recibo.cshtml" />
     <Content Include="Views\Procesos\HistorialEntradas.cshtml" />
     <Content Include="Views\Procesos\HistorialFacturas.cshtml" />
     <Content Include="Views\Procesos\detalleFactura.cshtml" />
+    <Content Include="Views\VistasReportes\ReporteCliente.cshtml" />
+    <Content Include="Views\VistasReportes\ReporteProducto.cshtml" />
+    <Content Include="Views\VistasReportes\ReporteProveedores.cshtml" />
+    <Content Include="Views\VistasReportes\ReporteEntradas.cshtml" />
+    <Content Include="Views\VistasReportes\ReporteHistorial.cshtml" />
+    <Content Include="Views\VistasReportes\ReporteFactura.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

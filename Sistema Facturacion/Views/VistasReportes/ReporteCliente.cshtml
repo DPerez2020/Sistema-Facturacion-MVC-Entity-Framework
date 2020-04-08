@@ -1,42 +1,9 @@
 ﻿@model List<Sistema_Facturacion.Models.VistaClientes>
-
 @{
-    ViewBag.Title = "Index";
+    Layout = null;
 }
-
-<h2>Clientes</h2>
-<form action="../Clientes" method="post" onsubmit="guardardatos()">
-    <input type="text" name="nombre" placeholder="Nombre cliente" id="nombre" />
-    @Html.DropDownList("categoria", new SelectList(ViewBag.lista, "Id", "Descripcion"), "Seleccionar", new { id = "categoria" })
-    <input type="submit" value="BUSCAR" />
-</form>
-@using (Html.BeginForm("print", "Clientes", FormMethod.Post, new { onsubmit = "obtenerDatos()" }))
-{
-
-    <input type="hidden" name="nombre" id="nombrev" />
-    <input type="hidden" name="categoria" id="categoriav" />
-    <input type="submit" value="Generar reporte" />
-}
-
-<script>
-    function guardardatos() {
-        var nombre = document.getElementById("nombre").value;
-        var categoria = document.getElementById("categoria").value;
-        localStorage.setItem("nombre", nombre);
-        localStorage.setItem("categoria", categoria);
-    }
-    function obtenerDatos() {
-        var nombre = localStorage.getItem("nombre");
-        var categoria = localStorage.getItem("categoria");
-        document.getElementById("nombrev").value = nombre;
-        document.getElementById("categoriav").value = categoria;
-        localStorage.clear();
-    }
-</script>
 <p>El conteo total es de @ViewBag.Conteo</p>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -83,3 +50,4 @@
     }
 
 </table>
+

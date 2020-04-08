@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Sistema_Facturacion.Models;
 using Sistema_Facturacion.infraestructure;
 using System.Threading.Tasks;
+using Rotativa;
 
 namespace Sistema_Facturacion.Controllers
 {
@@ -20,24 +21,36 @@ namespace Sistema_Facturacion.Controllers
         public  ActionResult Index()
         {
             ViewBag.lista = db.Categorias.ToList();
-            var clientes = from a in db.Clientes
+           var clientes = from a in db.Clientes
                             join b in db.Categorias
                             on a.CategoriaId equals b.Id
-                            select new VistaClientes { id = a.Id,RNC_Cedula=a.RNC_Cedula, nombre = a.Nombre,telefono = a.Telefono, email = a.Email,categoria=b.Descripcion };
+                            select new VistaClientes { id = a.Id,RNC_Cedula=a.RNC_Cedula, 
+                                nombre = a.Nombre,telefono = a.Telefono, email = a.Email,categoria=b.Descripcion };
             return View("Index", clientes.ToList());
         }
-
         [HttpPost]
-        public ActionResult Index(string nombre,int? categoria)
+        public ActionResult print(string nombre,int?categoria)
         {
-            ViewBag.lista = db.Categorias.ToList();
+            return new ActionAsPdf("generarReport", new {nombre=nombre,categoria=categoria})
+            {
+                FileName = "ReporteCliente.pdf",
+            };
+        }
+
+        public ActionResult generarReport(string nombre,int?categoria) {
+
+            var clientes = getdata(nombre, categoria);
+            return View("~/Views/VistasReportes/ReporteCliente.cshtml", clientes);
+        }
+
+        private List<VistaClientes> getdata(string nombre,int? categoria) {
             if (nombre == string.Empty && categoria == null)
             {
                 var clientes = from a in db.Clientes
                                join b in db.Categorias
                                on a.CategoriaId equals b.Id
                                select new VistaClientes { id = a.Id, RNC_Cedula = a.RNC_Cedula, nombre = a.Nombre, telefono = a.Telefono, email = a.Email, categoria = b.Descripcion };
-                return View("Index", clientes.ToList());
+                return  clientes.ToList();
             }
             else if (nombre != string.Empty && categoria != null)
             {
@@ -47,7 +60,7 @@ namespace Sistema_Facturacion.Controllers
                                where a.Nombre.StartsWith(nombre) && a.CategoriaId == categoria
                                select new VistaClientes { id = a.Id, RNC_Cedula = a.RNC_Cedula, nombre = a.Nombre, telefono = a.Telefono, email = a.Email, categoria = b.Descripcion };
                 ViewBag.Conteo = clientes.ToList().Count;
-                return View("Index", clientes.ToList());
+                return  clientes.ToList();
             }
             else if (nombre == string.Empty && categoria != null)
             {
@@ -57,17 +70,25 @@ namespace Sistema_Facturacion.Controllers
                                where a.CategoriaId == categoria
                                select new VistaClientes { id = a.Id, RNC_Cedula = a.RNC_Cedula, nombre = a.Nombre, telefono = a.Telefono, email = a.Email, categoria = b.Descripcion };
                 ViewBag.Conteo = clientes.ToList().Count;
-                return View("Index", clientes.ToList());
+                return clientes.ToList();
 
             }
-            else {
+            else
+            {
                 var clientes = from a in db.Clientes
                                join b in db.Categorias
                                on a.CategoriaId equals b.Id
                                where a.Nombre.StartsWith(nombre)
                                select new VistaClientes { id = a.Id, RNC_Cedula = a.RNC_Cedula, nombre = a.Nombre, telefono = a.Telefono, email = a.Email, categoria = b.Descripcion };
-                return View("Index", clientes.ToList());
+                return clientes.ToList();
             }
+        }
+        [HttpPost]
+        public ActionResult Index(string nombre,int? categoria)
+        {
+            ViewBag.lista = db.Categorias.ToList();
+            var clientes = getdata(nombre, categoria);
+            return View("Index", clientes);
         }
 
 

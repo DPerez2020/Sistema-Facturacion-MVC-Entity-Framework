@@ -4,10 +4,33 @@
 }
 
 <h2>Productos</h2>
-<form action="../Productoes" method="post">
-    <input type="text" name="busqueda" placeholder="Nombre producto" />
+@using (Html.BeginForm("Index", "Productoes", FormMethod.Post, new { onsubmit = "guardar()" })) { 
+    <input type="text" name="nombre" placeholder="Nombre producto" id="nombre" />
     <input type="submit" value="BUSCAR" />
-</form>
+}
+
+@using (Html.BeginForm("print", "Productoes", FormMethod.Post, new { onsubmit = "obtenerDatos()" }))
+{
+
+    <input type="hidden" name="nombre" id="nombrev" />
+    <input type="submit" value="Generar reporte" />
+}
+
+<script>
+    function guardar() {
+        var nombre = document.getElementById("nombre").value;
+        alert(nombre)
+        console.log(nombre);
+        localStorage.setItem("nombre", nombre);
+    }
+    function obtenerDatos() {
+        var nombre = localStorage.getItem("nombre");
+        alert(nombre);
+        document.getElementById("nombrev").value = nombre;
+        localStorage.clear();
+    }
+</script>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -27,22 +50,22 @@
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.producto)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Precio)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.proveedor)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-        @Html.ActionLink("Details", "Details", new { id = item.id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.id })
-    </td>
-</tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.producto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.proveedor)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
     }
 
 </table>
