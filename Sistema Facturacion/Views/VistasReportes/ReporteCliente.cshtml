@@ -1,0 +1,53 @@
+﻿@model List<Sistema_Facturacion.Models.VistaClientes>
+@{
+    Layout = null;
+}
+<p>El conteo total es de @ViewBag.Conteo</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model[0].RNC_Cedula)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].telefono)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model[0].categoria);
+        </th>
+    </tr>
+
+    @foreach (var cliente in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.RNC_Cedula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => cliente.categoria)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = cliente.id }) |
+                @Html.ActionLink("Details", "Details", new { id = cliente.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = cliente.id })
+            </td>
+        </tr>
+    }
+
+</table>
+

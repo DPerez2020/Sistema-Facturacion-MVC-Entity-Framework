@@ -1,0 +1,34 @@
+﻿@model Sistema_Facturacion.Models.Facturacion
+@{
+    ViewBag.Title = "Recibo";
+    Layout = null;
+}
+
+<h2>Recibo</h2>
+
+<label>Cliente: @ViewBag.cliente.Nombre</label>
+<label>Email: @ViewBag.cliente.Email</label>
+<label>Fecha: @Model.Fecha</label>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Detalle)
+        {
+        <tr>
+            <td>@item.NombreProducto </td>
+            <td>@item.PrecioProduco</td>
+            <td>@item.CantidadProducto</td>
+            <td>@item.Total</td>
+        </tr>
+        }
+    </tbody>
+</table>

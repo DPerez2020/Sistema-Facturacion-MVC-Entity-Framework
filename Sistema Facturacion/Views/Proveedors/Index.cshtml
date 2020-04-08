@@ -6,11 +6,35 @@
 
 <h2>Proveedores</h2>
 
-<form action="../Proveedors" method="post">
-    <input type="text" name="nombre" placeholder="Nombre proveedor" />
-    <input type="text" name="email" placeholder="Email del proveedor" />
+<form action="../Proveedors" method="post" onsubmit="guardar">
+    <input type="text" name="nombre" placeholder="Nombre proveedor" id="nombre" />
+    <input type="text" name="email" placeholder="Email del proveedor" id="email" />
     <input type="submit" value="BUSCAR" />
 </form>
+
+@using (Html.BeginForm("print", "proveedors", FormMethod.Post, new { onsubmit = "obtenerDatos()" }))
+{
+
+    <input type="hidden" name="nombre" placeholder="Nombre proveedor" id="nombrev"/>
+    <input type="hidden" name="email" placeholder="Email del proveedor" id="emailv" />
+    <input type="submit" value="Generar reporte" />
+}
+
+<script>
+    function guardar() {
+        var nombre = document.getElementById("nombre").value;
+        var email = document.getElementById("email").value;
+        localStorage.setItem("nombre", nombre);
+        localStorage.setItem("email", email);
+    }
+    function obtenerDatos() {
+        var nombre = localStorage.getItem("nombre");
+        var email = localStorage.getItem("email");
+        document.getElementById("nombrev").value = nombre;
+        document.getElementById("emailv").value = email;
+        localStorage.clear();
+    }
+</script>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -32,26 +56,27 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.RNC_Cedula)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Telefono)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RNC_Cedula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
